@@ -18,11 +18,14 @@ int main()
         if (r != x)
         {
             x = r;
-            cout << "Operation " << i << endl << endl;
+            cout << "Operation " << i << endl
+                 << endl;
         }
         else
         {
-            cout << endl << "Operation end." << endl << endl;
+            cout << endl
+                 << "Operation end." << endl
+                 << endl;
             break;
         }
     }
