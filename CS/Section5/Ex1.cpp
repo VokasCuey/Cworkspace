@@ -38,6 +38,7 @@ bool nameCheck(char c[3])
         cin >> c;
         nameCheck(c);
     }
+    return true;
 }
 int fac(int n)
 {
