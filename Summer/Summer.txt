@@ -1,0 +1,33 @@
+Num=
+Group:{}
+Scale:{}
+Time_:{}
+//------------------------------------
+#define Semibreve 0           //全音符
+#define D_Minim 1             //附点二分音符
+#define Minim 2               //二分音符
+#define D_Crotchet 3          //附点四分音符
+#define Crotchet 4            //四分音符
+#define D_Quaver 5            //附点八分音符
+#define Quaver 6              //八分音符
+#define D_Semiquaver 7        //附点十六分音符
+#define Semiquaver 8          //十六分音符
+#define demisemiquaver 9      //三十二分音符
+#define hemidemisemiquaver 10 //六十四分音符
+#define Interval 11           //音间隔
+//------------------------------------
+#define C 0
+#define D 1
+#define E 2
+#define F 3
+#define S_F 4
+#define G 5
+#define A 6
+#define F_B 7
+#define B 8
+#define Pause 9
+//------------------------------------
+#define Low 0
+#define Medium 1
+#define High 2
+#define None 3
