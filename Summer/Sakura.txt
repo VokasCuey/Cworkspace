@@ -1,0 +1,224 @@
+Num=372
+Group: {Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,High,
+        Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,High,High,High,
+
+        Medium,Medium,Low,Low,Low,Low,Medium,Medium,Low,Low,Low,Low,
+        Medium,Medium,Low,Low,Low,Low,Medium,Low,Low,Low,
+        Medium,Medium,Low,Low,Low,Low,Medium,Medium,Low,Low,Low,Low,
+        Medium,Medium,Medium,High,Medium,High,Medium,Medium,Medium,Medium,
+
+        Medium,Medium,Low,Low,Low,Low,Medium,Medium,Low,Low,Low,Low,
+        Medium,Medium,Low,Low,Low,Low,Medium,Low,Low,Low,
+        Medium,Low,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Low,Medium,Medium,
+        High,Medium,Medium,Medium,Medium,Medium,High,
+
+        High,High,Medium,Medium,Medium,Medium,High,High,Medium,Medium,Medium,Medium,
+        High,High,Medium,Medium,Medium,Medium,High,Medium,Medium,Medium,
+        High,High,Medium,Medium,Medium,Medium,High,High,Medium,Medium,Medium,Medium,
+        High,High,High,H_High,High,H_High,High,High,High,High,
+
+        High,High,Medium,Medium,Medium,Medium,High,High,Medium,Medium,Medium,Medium,
+        High,High,Medium,Medium,Medium,Medium,High,Medium,Medium,Medium,
+        High,High,High,High,High,High,High,High,Medium,High,High,High,
+        High,High,High,High,
+
+        Medium,Medium,Medium,Medium,High,High,High,
+        Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,High,High,High,
+        High,High,High,Medium,
+
+        Medium,Medium,Medium,Medium,High,High,High,
+        Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,Medium,High,High,
+        High,High,High,Medium,
+
+        High,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,High,Medium,
+        High,Medium,Medium,Medium,
+
+        High,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,High,High,
+        Medium,Medium,High,
+
+        High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+        High,High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+
+        High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+        High,High,High,High,
+        High,High,Medium,Medium,Medium,Medium,High,
+
+        High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+        High,High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+
+        High,High,High,High,High,
+        High,High,High,High,High,Medium,High,
+        High,High,High,High,
+        High,High,High,High,High}
+Scale: {A,A,G,A,A,G,
+        A,A,G,A,C,
+        A,A,G,A,A,G,
+        A,C,D,E,
+
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,A,G,A,G,C,B,A,G,
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,G,C,B,C,B,A,G,E,
+
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,A,G,A,G,C,B,A,G,
+        C,A,C,D,C,D,E,D,E,G,C,E,G,
+        C,B,A,G,A,A,C,
+
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,A,G,A,G,C,B,A,G,
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,G,C,B,C,B,A,G,E,
+
+        D,E,A,G,A,G,D,E,A,G,A,G,
+        D,E,A,G,A,G,C,B,A,G,
+        E,D,E,G,A,G,E,D,A,C,E,G,
+        A,A,G,A,
+
+        A,A,G,A,C,D,E,
+        A,A,G,A,G,E,G,
+        A,A,G,A,C,D,E,
+        E,D,C,A,
+
+        A,A,G,A,C,D,E,
+        A,A,G,A,G,G,E,
+        A,A,G,G,A,C,D,
+        E,D,C,A,
+
+        C,B,A,G,
+        G,G,A,E,D,E,
+        E,G,A,D,B,
+        C,B,G,A,
+
+        C,B,A,G,
+        G,G,A,E,D,E,E,G,
+        A,A,A,C,D,
+        B,A,C,
+
+        D,D,E,E,E,
+        G,A,D,C,E,A,C,
+        D,D,E,E,E,E,
+        F,E,D,C,C,A,C,
+
+        D,D,E,E,E,
+        G,A,D,C,E,A,C,
+        F,E,D,C,
+        C,D,B,G,A,A,C,
+
+        D,D,E,E,E,
+        G,A,D,C,E,A,C,
+        D,D,E,E,E,E,
+        F,E,D,C,C,A,C,
+
+        D,D,E,E,E,
+        G,A,D,C,E,A,C,
+        F,E,D,C,
+        D,C,E,G,A}
+Time_: {Quaver,Crotchet,Quaver,Quaver,Crotchet,Quaver,
+        Quaver,Crotchet,Quaver,Crotchet,Crotchet,
+        Quaver,Crotchet,Quaver,Quaver,Crotchet,Quaver,
+        Crotchet,Crotchet,Crotchet,Crotchet,
+
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,
+
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,
+
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Crotchet,Quaver,Minim,
+
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,Crotchet,Crotchet,Crotchet,
+
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,D_Quaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,Crotchet,Crotchet,Crotchet,
+
+        Crotchet,Crotchet,Crotchet,Crotchet,
+        Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Minim,
+        Quaver,Quaver,Crotchet,Crotchet,Crotchet,
+        Crotchet,Quaver,Quaver,Minim,
+
+        Crotchet,Crotchet,Crotchet,Crotchet,
+        Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+        Quaver,Crotchet,Quaver,Crotchet,Crotchet,
+        D_Minim,Quaver,Quaver,
+
+        Quaver,Crotchet,Quaver,D_Crotchet,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+        Quaver,Crotchet,Quaver,Crotchet,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+
+        Quaver,Crotchet,Quaver,D_Crotchet,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+        Crotchet,Crotchet,Crotchet,Crotchet,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+
+        Quaver,Crotchet,Quaver,D_Crotchet,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+        Quaver,Crotchet,Quaver,Crotchet,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+
+        Quaver,Crotchet,Quaver,D_Crotchet,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Crotchet,Quaver,Quaver,
+        Crotchet,Crotchet,Crotchet,Crotchet,
+        Quaver,Quaver,Quaver,Quaver,Minim}
+//------------------------------------
+#define Semibreve 0           //全音符
+#define D_Minim 1             //附点二分音符
+#define Minim 2               //二分音符
+#define D_Crotchet 3          //附点四分音符
+#define Crotchet 4            //四分音符
+#define D_Quaver 5            //附点八分音符
+#define Quaver 6              //八分音符
+#define D_Semiquaver 7        //附点十六分音符
+#define Semiquaver 8          //十六分音符
+#define demisemiquaver 9      //三十二分音符
+#define hemidemisemiquaver 10 //六十四分音符
+#define Interval 11           //音间隔
+//------------------------------------
+#define C 0
+#define D 1
+#define E 2
+#define F 3
+#define S_F 4
+#define G 5
+#define A 6
+#define F_B 7
+#define B 8
+#define Pause 9
+//------------------------------------
+#define L_Low 0
+#define Low 1
+#define Medium 2
+#define High 3
+#define H_High 4
+#define None 5

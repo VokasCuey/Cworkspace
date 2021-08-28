@@ -1,37 +1,49 @@
+//Composition List: {1:卡农, 2:清华校歌, 3:闪亮的日子 , 4:千本樱}
 #include "msp430.h"
-const unsigned char Group[4] = {0, 1, 2, 4}; //高/中/低/任意音
-const unsigned char Scale[4][10] = {{250, 222, 198, 187, 176, 166, 148, 140, 132, 0},
-                                    {124, 110, 98, 93, 88, 83, 73, 69, 65, 0},
-                                    {62, 55, 49, 46, 43, 41, 36, 34, 32, 0},
-                                    /*{30, 27, 24, 22, 21, 20, 18, 17, 16, 0},*/
-                                    {0}};                                                                             //音阶
+const unsigned char Group[6] = {0, 1, 2, 3, 4, 5}; //极低/低/中/高/极高/任意/任意音(播放器)
+const unsigned char Scale[6][13] = {{249, 235, 222, 210, 198, 187, 176, 166, 157, 148, 140, 132, 0},
+                                    {124, 117, 111, 104, 98, 93, 88, 83, 78, 73, 69, 65, 0},
+                                    {62, 58, 55, 52, 49, 46, 43, 41, 38, 36, 34, 32, 0},
+                                    {30, 29, 27, 25, 24, 22, 21, 20, 19, 18, 17, 16, 0},
+                                    {15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                    {0}};       //音阶(播放器)
+const unsigned char Piano_Group[3] = {0, 1, 2}; //低/中/高/音(电子琴)
+const unsigned char Piano_Scale[3][7] = {{124, 111, 98, 93, 83, 73, 65},
+                                         {62, 55, 49, 46, 41, 36, 32},
+                                         {30, 27, 24, 22, 20, 18, 16}};                                               //音阶(电子琴)
 const unsigned long int Time[12] = {131072, 98304, 65536, 49152, 32768, 24576, 16384, 12288, 8192, 4096, 2048, 1024}; //时值  Crotchet=60
-const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6};                                              //按键
-//------------------------------------
-#define Scale_1 BIT0    //K1
-#define Canon_2 BIT1    //K2
-#define Tsinghua_3 BIT2 //K3
-#define Days_4 BIT3     //K4
+#define Standard_Speed 60
+const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6}; //按键
 //------------------------------------
 #define Gp 0
 #define Se 1
 #define Te 2
 //------------------------------------
-#define Low 0
-#define Medium 1
-#define High 2
-#define None 3
+#define L_Low 0
+#define Low 1
+#define Medium 2
+#define High 3
+#define H_High 4
+#define None 5
 //------------------------------------
 #define C 0
-#define D 1
-#define E 2
-#define F 3
-#define S_F 4
-#define G 5
-#define A 6
-#define F_B 7
-#define B 8
-#define Pause 9
+#define S_C 1
+#define F_D 1
+#define D 2
+#define S_D 3
+#define F_E 3
+#define E 4
+#define F 5
+#define S_F 6
+#define F_G 6
+#define G 7
+#define S_G 8
+#define F_A 8
+#define A 9
+#define S_A 10
+#define F_B 10
+#define B 11
+#define Pause 12
 //------------------------------------
 #define Semibreve 0           //全音符
 #define D_Minim 1             //附点二分音符
@@ -46,20 +58,9 @@ const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6};        
 #define hemidemisemiquaver 10 //六十四分音符
 #define Interval 11           //音间隔
 //------------------------------------//谱子
-#define Scale_Num 22
-const unsigned int Scale_Sheet[3][Scale_Num] = {{Low, Low, Low, Low, Low, Low, Low,
-                                                 Medium, Medium, Medium, Medium, Medium, Medium, Medium,
-                                                 High, High, High, High, High, High, High,
-                                                 None},
-                                                {C, D, E, F, G, A, B,
-                                                 C, D, E, F, G, A, B,
-                                                 C, D, E, F, G, A, B,
-                                                 Pause},
-                                                {Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet,
-                                                 Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet,
-                                                 Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet,
-                                                 Crotchet}};
+#define Composition_Num 4
 #define Canon_Num 391
+#define Canon_Speed 60
 const unsigned int Canon_Sheet[3][Canon_Num] = {{High, High, High, Medium, Medium, Medium, Medium, Medium,
                                                  High, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
                                                  High, Medium, High, Medium, Low, Medium, Medium, Medium, Medium, High, Medium, Medium, Medium, High, High, High, High, High, High, High, High, High, High, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
@@ -109,6 +110,7 @@ const unsigned int Canon_Sheet[3][Canon_Num] = {{High, High, High, Medium, Mediu
                                                  Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet,
                                                  D_Crotchet, Quaver, Crotchet, Crotchet, Minim, Crotchet, Crotchet}};
 #define Tsinghua_Num 97
+#define Tsinghua_Speed 60
 const unsigned int Tsinghua_Sheet[3][Tsinghua_Num] = {{Medium, Medium, Medium, Medium, Medium, Medium, High, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Low, Medium, Medium, Medium,
                                                        Medium, Medium, Medium, High, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, High, High, Medium, High, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
                                                        Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
@@ -127,6 +129,7 @@ const unsigned int Tsinghua_Sheet[3][Tsinghua_Num] = {{Medium, Medium, Medium, M
                                                        Crotchet, Minim, Crotchet, Crotchet, Minim, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Minim,
                                                        Crotchet, Minim, Crotchet, Crotchet, Minim, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Crotchet, Quaver, Quaver, Minim}};
 #define Days_Num 136
+#define Days_Speed 60
 const unsigned int Days_Sheet[3][Days_Num] = {{Medium, Low, Medium, Medium, Medium, Low, Low, Medium, Medium, Low, Low, Medium, Low, Low,
                                                Medium, Low, Medium, Medium, Medium, Low, Low, Medium, Medium, Low, Low, Medium, Low, Low, Low,
                                                Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, None, Medium,
@@ -157,6 +160,200 @@ const unsigned int Days_Sheet[3][Days_Num] = {{Medium, Low, Medium, Medium, Medi
                                                Minim, D_Minim, Crotchet, Semibreve, Crotchet, Crotchet, Minim, D_Minim, Crotchet, Semibreve, Crotchet, Crotchet,
                                                D_Minim, Crotchet, Crotchet, Crotchet, Semibreve, Minim, D_Minim, Crotchet, Crotchet, Crotchet, Semibreve, Crotchet, Quaver, Quaver,
                                                Minim, D_Minim, Crotchet, Semibreve, Crotchet, Crotchet, D_Minim, Crotchet, Crotchet, Crotchet, Semibreve, Crotchet, Crotchet}};
+#define Sakura_Num 372
+#define Sakura_Speed 100
+const unsigned int Sakura_Sheet[3][Sakura_Num] = {{Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, Medium, High,
+                                                   Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, High, High, High,
+
+                                                   Medium, Medium, Low, Low, Low, Low, Medium, Medium, Low, Low, Low, Low,
+                                                   Medium, Medium, Low, Low, Low, Low, Medium, Low, Low, Low,
+                                                   Medium, Medium, Low, Low, Low, Low, Medium, Medium, Low, Low, Low, Low,
+                                                   Medium, Medium, Medium, High, Medium, High, Medium, Medium, Medium, Medium,
+
+                                                   Medium, Medium, Low, Low, Low, Low, Medium, Medium, Low, Low, Low, Low,
+                                                   Medium, Medium, Low, Low, Low, Low, Medium, Low, Low, Low,
+                                                   Medium, Low, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium, Low, Medium, Medium,
+                                                   High, Medium, Medium, Medium, Medium, Medium, High,
+
+                                                   High, High, Medium, Medium, Medium, Medium, High, High, Medium, Medium, Medium, Medium,
+                                                   High, High, Medium, Medium, Medium, Medium, High, Medium, Medium, Medium,
+                                                   High, High, Medium, Medium, Medium, Medium, High, High, Medium, Medium, Medium, Medium,
+                                                   High, High, High, H_High, High, H_High, High, High, High, High,
+
+                                                   High, High, Medium, Medium, Medium, Medium, High, High, Medium, Medium, Medium, Medium,
+                                                   High, High, Medium, Medium, Medium, Medium, High, Medium, Medium, Medium,
+                                                   High, High, High, High, High, High, High, High, Medium, High, High, High,
+                                                   High, High, High, High,
+
+                                                   Medium, Medium, Medium, Medium, High, High, High,
+                                                   Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, Medium, High, High, High,
+                                                   High, High, High, Medium,
+
+                                                   Medium, Medium, Medium, Medium, High, High, High,
+                                                   Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, Medium, Medium, High, High,
+                                                   High, High, High, Medium,
+
+                                                   High, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, High, Medium,
+                                                   High, Medium, Medium, Medium,
+
+                                                   High, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                                   Medium, Medium, Medium, High, High,
+                                                   Medium, Medium, High,
+
+                                                   High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+                                                   High, High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+
+                                                   High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+                                                   High, High, High, High,
+                                                   High, High, Medium, Medium, Medium, Medium, High,
+
+                                                   High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+                                                   High, High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+
+                                                   High, High, High, High, High,
+                                                   High, High, High, High, High, Medium, High,
+                                                   High, High, High, High,
+                                                   High, High, High, High, High},
+                                                  {A, A, G, A, A, G,
+                                                   A, A, G, A, C,
+                                                   A, A, G, A, A, G,
+                                                   A, C, D, E,
+
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, A, G, A, G, C, B, A, G,
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, G, C, B, C, B, A, G, E,
+
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, A, G, A, G, C, B, A, G,
+                                                   C, A, C, D, C, D, E, D, E, G, C, E, G,
+                                                   C, B, A, G, A, A, C,
+
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, A, G, A, G, C, B, A, G,
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, G, C, B, C, B, A, G, E,
+
+                                                   D, E, A, G, A, G, D, E, A, G, A, G,
+                                                   D, E, A, G, A, G, C, B, A, G,
+                                                   E, D, E, G, A, G, E, D, A, C, E, G,
+                                                   A, A, G, A,
+
+                                                   A, A, G, A, C, D, E,
+                                                   A, A, G, A, G, E, G,
+                                                   A, A, G, A, C, D, E,
+                                                   E, D, C, A,
+
+                                                   A, A, G, A, C, D, E,
+                                                   A, A, G, A, G, G, E,
+                                                   A, A, G, G, A, C, D,
+                                                   E, D, C, A,
+
+                                                   C, B, A, G,
+                                                   G, G, A, E, D, E,
+                                                   E, G, A, D, B,
+                                                   C, B, G, A,
+
+                                                   C, B, A, G,
+                                                   G, G, A, E, D, E, E, G,
+                                                   A, A, A, C, D,
+                                                   B, A, C,
+
+                                                   D, D, E, E, E,
+                                                   G, A, D, C, E, A, C,
+                                                   D, D, E, E, E, E,
+                                                   F, E, D, C, C, A, C,
+
+                                                   D, D, E, E, E,
+                                                   G, A, D, C, E, A, C,
+                                                   F, E, D, C,
+                                                   C, D, B, G, A, A, C,
+
+                                                   D, D, E, E, E,
+                                                   G, A, D, C, E, A, C,
+                                                   D, D, E, E, E, E,
+                                                   F, E, D, C, C, A, C,
+
+                                                   D, D, E, E, E,
+                                                   G, A, D, C, E, A, C,
+                                                   F, E, D, C,
+                                                   D, C, E, G, A},
+                                                  {Quaver, Crotchet, Quaver, Quaver, Crotchet, Quaver,
+                                                   Quaver, Crotchet, Quaver, Crotchet, Crotchet,
+                                                   Quaver, Crotchet, Quaver, Quaver, Crotchet, Quaver,
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver,
+
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Quaver, Semiquaver, Semiquaver, Quaver, Semiquaver, Semiquaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver,
+
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver,
+                                                   Quaver, Quaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Quaver, Crotchet, Quaver, Minim,
+
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, D_Quaver, Semiquaver, Quaver, Quaver, Quaver, Quaver,
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+                                                   Quaver, Semiquaver, Semiquaver, Quaver, Quaver, Minim,
+                                                   Quaver, Quaver, Crotchet, Crotchet, Crotchet,
+                                                   Crotchet, Quaver, Quaver, Minim,
+
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+                                                   Quaver, Semiquaver, Semiquaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+                                                   Quaver, Crotchet, Quaver, Crotchet, Crotchet,
+                                                   D_Minim, Quaver, Quaver,
+
+                                                   Quaver, Crotchet, Quaver, D_Crotchet, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+                                                   Quaver, Crotchet, Quaver, Crotchet, Quaver, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+
+                                                   Quaver, Crotchet, Quaver, D_Crotchet, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+
+                                                   Quaver, Crotchet, Quaver, D_Crotchet, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+                                                   Quaver, Crotchet, Quaver, Crotchet, Quaver, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+
+                                                   Quaver, Crotchet, Quaver, D_Crotchet, Quaver,
+                                                   Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
+                                                   Crotchet, Crotchet, Crotchet, Crotchet,
+                                                   Quaver, Quaver, Quaver, Quaver, Minim}};
 //------------------------------------
 #define Piano 0
 #define Player 1
@@ -168,19 +365,25 @@ const unsigned int Days_Sheet[3][Days_Num] = {{Medium, Low, Medium, Medium, Medi
 #define PIANO_LED BIT2          //P2.2 PLAY_LED-L3
 #define PLAYER_LED BIT3         //P2.3 PLAYER_LED-L4
 #define INTERVAL_SWITCH BIT7    //P1.7 K8 INTERVAL SWITCH
+#define BACK BIT0
+#define NEXT BIT1
+#define PLAY BIT2
 //------------------------------------
+int playing_num = 0;
 int K = 1;
 int I = 1;
-int scale = 0;
-int group = 0;
+int piano_scale = 0;
+int piano_group = 0;
 int mode = 0;
 int note_Num = 0;
 void Delay(unsigned long int time);
 void Interval_G(int I);
-void Scale_Play();
 void Canon_Play();
 void Tsinghua_Play();
 void Days_Play();
+void Sakura_Play();
+typedef void (*Music_Play)();
+Music_Play Play[Composition_Num] = {Canon_Play, Tsinghua_Play, Days_Play, Sakura_Play};
 int main(void)
 {
     WDTCTL = WDTPW + WDTHOLD; //stop watchdog timer
@@ -232,10 +435,11 @@ int main(void)
     TA1CCR0 = 0; //Initialize
     //TA1CCR1=0;
     mode = Piano;
-    group = Medium;
-    scale = C;
+    piano_group = 1;
+    piano_scale = 0;
     K = 1;
     I = 1;
+    playing_num = 0;
     //------------------------------------
     while (1)
     {
@@ -254,22 +458,12 @@ void Interval_G(int I)
         Delay(Time[Interval]);
     }
 }
-void Scale_Play()
-{
-    for (note_Num = 0; note_Num < Scale_Num; note_Num++)
-    {
-        TA1CCR0 = Scale[Scale_Sheet[Gp][note_Num]][Scale_Sheet[Se][note_Num]];
-        Delay(Time[Scale_Sheet[Te][note_Num]]);
-        Interval_G(I);
-    }
-    TA1CCR0 = 0;
-}
 void Canon_Play()
 {
     for (note_Num = 0; note_Num < Canon_Num; note_Num++)
     {
         TA1CCR0 = Scale[Canon_Sheet[Gp][note_Num]][Canon_Sheet[Se][note_Num]];
-        Delay(Time[Canon_Sheet[Te][note_Num]]);
+        Delay((unsigned long int)(Time[Canon_Sheet[Te][note_Num]]) * ((float)(Standard_Speed) / (float)(Canon_Speed)));
         Interval_G(I);
     }
     TA1CCR0 = 0;
@@ -279,7 +473,7 @@ void Tsinghua_Play()
     for (note_Num = 0; note_Num < Tsinghua_Num; note_Num++)
     {
         TA1CCR0 = Scale[Tsinghua_Sheet[Gp][note_Num]][Tsinghua_Sheet[Se][note_Num]];
-        Delay(Time[Tsinghua_Sheet[Te][note_Num]]);
+        Delay((unsigned long int)(Time[Tsinghua_Sheet[Te][note_Num]]) * ((float)(Standard_Speed) / (float)(Tsinghua_Speed)));
         Interval_G(I);
     }
     TA1CCR0 = 0;
@@ -289,7 +483,17 @@ void Days_Play()
     for (note_Num = 0; note_Num < Days_Num; note_Num++)
     {
         TA1CCR0 = Scale[Days_Sheet[Gp][note_Num]][Days_Sheet[Se][note_Num]];
-        Delay(Time[Days_Sheet[Te][note_Num]]);
+        Delay((unsigned long int)(Time[Days_Sheet[Te][note_Num]]) * ((float)(Standard_Speed) / (float)(Days_Speed)));
+        Interval_G(I);
+    }
+    TA1CCR0 = 0;
+}
+void Sakura_Play()
+{
+    for (note_Num = 0; note_Num < Sakura_Num; note_Num++)
+    {
+        TA1CCR0 = Scale[Sakura_Sheet[Gp][note_Num]][Sakura_Sheet[Se][note_Num]];
+        Delay((unsigned long int)(Time[Sakura_Sheet[Te][note_Num]]) * ((float)(Standard_Speed) / (float)(Sakura_Speed)));
         Interval_G(I);
     }
     TA1CCR0 = 0;
@@ -306,7 +510,7 @@ __interrupt void Key_Press(void)
             {
                 K = 0;
             }
-            group = Group[K];
+            piano_group = Piano_Group[K];
             P2OUT ^= SCALE_INTERVAL_LED;
             Delay(Time[Crotchet]);
             P2OUT ^= SCALE_INTERVAL_LED;
@@ -318,13 +522,13 @@ __interrupt void Key_Press(void)
             {
                 if ((P1IFG & Key[key_num]) != 0)
                 {
-                    scale = key_num;
-                    TA1CCR0 = Scale[group][scale];
+                    piano_scale = key_num;
+                    TA1CCR0 = Piano_Scale[piano_group][piano_scale];
                     //TA1CCR1=0.05*Scale[group][scale];
                     Delay(Time[Crotchet]);
                     TA1CCR0 = 0;
                     //TA1CCR1=0;
-                    P1IFG &= ~Key[scale];
+                    P1IFG &= ~Key[piano_scale];
                 }
             }
         }
@@ -333,26 +537,6 @@ __interrupt void Key_Press(void)
     else if (mode == Player)
     {
         P2OUT ^= PLAYING_LED;
-        if ((P1IFG & Scale_1) != 0)
-        {
-            Scale_Play();
-            P1IFG &= ~Scale_1;
-        }
-        if ((P1IFG & Canon_2) != 0)
-        {
-            Canon_Play();
-            P1IFG &= ~Canon_2;
-        }
-        if ((P1IFG & Tsinghua_3) != 0)
-        {
-            Tsinghua_Play();
-            P1IFG &= ~Tsinghua_3;
-        }
-        if ((P1IFG & Days_4) != 0)
-        {
-            Days_Play();
-            P1IFG &= ~Days_4;
-        }
         if ((P1IFG & INTERVAL_SWITCH) != 0)
         {
             if (I == 1)
@@ -363,10 +547,39 @@ __interrupt void Key_Press(void)
             {
                 I = 1;
             }
-            P1IFG &= !INTERVAL_SWITCH;
+            P1IFG &= ~INTERVAL_SWITCH;
             P2OUT ^= SCALE_INTERVAL_LED;
             Delay(Time[Crotchet]);
             P2OUT ^= SCALE_INTERVAL_LED;
+        }
+        else if ((P1IFG & BACK) != 0)
+        {
+            if (playing_num == 0)
+            {
+                playing_num = Composition_Num - 1;
+            }
+            else
+            {
+                playing_num--;
+            }
+            P1IFG &= ~BACK;
+        }
+        else if ((P1IFG & NEXT) != 0)
+        {
+            if (playing_num == Composition_Num - 1)
+            {
+                playing_num = 0;
+            }
+            else
+            {
+                playing_num++;
+            }
+            P1IFG &= ~NEXT;
+        }
+        else if ((P1IFG & PLAY) != 0)
+        {
+            (*Play[playing_num])();
+            P1IFG &= ~PLAY;
         }
         Delay(Time[Crotchet]);
         P2OUT ^= PLAYING_LED;

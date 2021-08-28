@@ -1,13 +1,13 @@
 Num=22
-Group:{Low,Low,Low,Low,Low,Low,Low,
+Group: {Low,Low,Low,Low,Low,Low,Low,
        Medium,Medium,Medium,Medium,Medium,Medium,Medium,
        High,High,High,High,High,High,High,
        None}
-Scale:{C,D,E,F,G,A,B,
+Scale: {C,D,E,F,G,A,B,
        C,D,E,F,G,A,B,
        C,D,E,F,G,A,B,
        Pause}
-Time_:{Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,
+Time_: {Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,
        Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,
        Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,
        Crotchet}
@@ -36,7 +36,9 @@ Time_:{Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,Crotchet,
 #define B 8
 #define Pause 9
 //------------------------------------
-#define Low 0
-#define Medium 1
-#define High 2
-#define None 3
+#define L_Low 0
+#define Low 1
+#define Medium 2
+#define High 3
+#define H_High 4
+#define None 5

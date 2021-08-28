@@ -42,7 +42,9 @@ Time_:{Crotchet,Quaver,Quaver,Crotchet,Crotchet,Crotchet,Quaver,Quaver,Crotchet,
 #define B 8
 #define Pause 9
 //------------------------------------
-#define Low 0
-#define Medium 1
-#define High 2
-#define None 3
+#define L_Low 0
+#define Low 1
+#define Medium 2
+#define High 3
+#define H_High 4
+#define None 5

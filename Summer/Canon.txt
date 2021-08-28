@@ -1,52 +1,52 @@
 Num=391
-Group:{High,High, High,Medium, Medium,Medium, Medium,Medium,
-       High,Medium, Medium,Medium, Medium,Medium, Medium,Medium,
-       High,Medium,High,Medium,Low,Medium,Medium,Medium, Medium,High,Medium,Medium,Medium,High,High,High, High,High,High,High,High,High,High,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
-       Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Low,Medium,Medium,High,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
-       Medium,High,High, High,High, High,High,High,High, High,High,High,High,High,High,High,Medium,Medium,Medium,High,High,High,High,
-       High,High,High,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,High,Medium,Medium,Medium,High,High,High,High,High,
-       High,High,High,High,High,High,High,Medium,High,High,High,High,High,Medium, High,Medium,Medium,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,High,Medium,High, Medium,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
-       Medium,High,Medium,High,Medium,Medium,Medium,High,High,High,Medium,High,Medium,Medium, High,Medium,Medium,Medium,Medium,High,High,High, High,Medium,Medium,Medium,High,Low,Low,Low,
-       Low,Medium,Medium,Medium,Medium,Low,Low,Low, Low,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,Medium,Low,Medium,Low, Low,Medium,Medium,Medium,Medium,Low,Medium,Medium,
-       Medium,High,High,High,High,Medium,Medium,High, High,High,High,High,High,Medium,Medium,Medium, Medium,High,Medium,High,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,High,High,High,High,High,Medium,
-       Medium,Medium,Medium,Medium,Medium,High,High,High,High,High, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,High,High, High,High,High,High,High,Medium,
-       Medium,High, High,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,
-       High,Medium,Medium,Medium,Medium,Medium, Medium,High,Medium,Medium, High,Medium,Medium, High,High,High,
-       High,Medium, High,Medium, High,Medium,Low,Medium, Medium,Low,Low,Medium, Medium,High,High,Medium,
-       Medium,Medium,Medium,High, High,Medium,Medium,High, High,Medium,Low,Medium, Medium,High,High,Medium,
-       Medium,High,Medium,High, High,None,None}
-Scale:{E,D, C,B, A,G, A,B,
-       C,B, A,G, F,E, F,D,
-       C,B,C,C,B,G,D,E, C,C,B,A,B,E,G,A, F,E,D,F,F,E,C,B, A,G,F,E,D,F,E,D,
-       C,D,E,F,G,D,G,F, E,A,G,F,G,F,E,D, C,A,A,B,C,B,A,G, F,E,D,A,G,A,G,F,
-       E,E,D, C,D, C,E,D,F, G,E,F,G,E,F,G,G,A,B,C,D,E,F,
-       E,C,D,E,E,F,G,A,G,F,G,E,F,G, F,A,G,F,E,D,E,D,C,D,E,F,G,A, F,A,G,A,B,C,G,A,B,C,D,E,F,G,
-       E,C,D,E,D,C,D,B,C,D,E,D,C,B, C,A,B,C,C,D,E,F,E,D,E,C,B,C, A,C,B,A,G,F,G,F,E,F,G,A,B,C,
-       A,C,B,C,B,A,B,C,D,C,B,C,A,B, E,E,F,E,D,D,E,D, C,E,C,A,G,G,F,G,
-       A,A,B,A,B,G,F,G, A,A,G,A,B,B,A,B, C,C,D,C,B,B,C,B, A,A,G,A,B,B,E,D,
-       C,C,D,F,E,E,G,E, C,F,E,F,D,G,F,G, E,C,B,C,E,G,G,A,B,G, E,C,D,E,C,E,E,D,C,B,
-       A,A,G,A,B,C,E,D,C,E, F,C,B,A,A,G,D,G,G, E,E,E,F,E,D, C,C,C,D,C,B,
-       A,C, C,F_B,A,F_B,G,G, G,G,G,A,G,F, E,E,E,F,E,D,
-       C,F_B,A,F_B,G,G, F,C,B,B, G,G,F, E,E,D,
-       C,C, C,B, C,C,B,B, A,A,G,G, F,F,E,E,
-       D,A,D,D, E,E,D,D, C,C,B,B, A,A,G,G,
-       F,D,G,D, E,Pause,Pause}
-Time_:{Minim,Minim, Minim,Minim, Minim,Minim, Minim,Minim,
-       Minim,Minim, Minim,Minim, Minim,Minim, Minim,Minim,
-       Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Crotchet,Crotchet,Minim, Minim,Minim, Crotchet,Crotchet,Crotchet,Crotchet, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
-       Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
-       Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
-       Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver,
-       Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Minim,Minim, Quaver,Quaver,Quaver,Quaver,D_Crotchet,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver,
-       Quaver,Quaver,Quaver,Quaver,D_Crotchet,Quaver, Crotchet,Crotchet,D_Crotchet,Quaver, Minim,D_Crotchet,Quaver, Minim,D_Crotchet,Quaver,
-       D_Minim,Crotchet, Minim,Minim, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet,
-       Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet,
-       D_Crotchet,Quaver,Crotchet,Crotchet, Minim,Crotchet,Crotchet}
+Group: {High,High, High,Medium, Medium,Medium, Medium,Medium,
+        High,Medium, Medium,Medium, Medium,Medium, Medium,Medium,
+        High,Medium,High,Medium,Low,Medium,Medium,Medium, Medium,High,Medium,Medium,Medium,High,High,High, High,High,High,High,High,High,High,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Low,Medium,Medium,High,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,High,High, High,High, High,High,High,High, High,High,High,High,High,High,High,Medium,Medium,Medium,High,High,High,High,
+        High,High,High,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,High,Medium,Medium,Medium,High,High,High,High,High,
+        High,High,High,High,High,High,High,Medium,High,High,High,High,High,Medium, High,Medium,Medium,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,High,Medium,High, Medium,High,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,
+        Medium,High,Medium,High,Medium,Medium,Medium,High,High,High,Medium,High,Medium,Medium, High,Medium,Medium,Medium,Medium,High,High,High, High,Medium,Medium,Medium,High,Low,Low,Low,
+        Low,Medium,Medium,Medium,Medium,Low,Low,Low, Low,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,Medium,Low,Medium,Low, Low,Medium,Medium,Medium,Medium,Low,Medium,Medium,
+        Medium,High,High,High,High,Medium,Medium,High, High,High,High,High,High,Medium,Medium,Medium, Medium,High,Medium,High,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,High,High,High,High,High,Medium,
+        Medium,Medium,Medium,Medium,Medium,High,High,High,High,High, Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium,Medium, Medium,High,High,High,High,High, High,High,High,High,High,Medium,
+        Medium,High, High,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium, Medium,Medium,Medium,Medium,Medium,Medium,
+        High,Medium,Medium,Medium,Medium,Medium, Medium,High,Medium,Medium, High,Medium,Medium, High,High,High,
+        High,Medium, High,Medium, High,Medium,Low,Medium, Medium,Low,Low,Medium, Medium,High,High,Medium,
+        Medium,Medium,Medium,High, High,Medium,Medium,High, High,Medium,Low,Medium, Medium,High,High,Medium,
+        Medium,High,Medium,High, High,None,None}
+Scale: {E,D, C,B, A,G, A,B,
+        C,B, A,G, F,E, F,D,
+        C,B,C,C,B,G,D,E, C,C,B,A,B,E,G,A, F,E,D,F,F,E,C,B, A,G,F,E,D,F,E,D,
+        C,D,E,F,G,D,G,F, E,A,G,F,G,F,E,D, C,A,A,B,C,B,A,G, F,E,D,A,G,A,G,F,
+        E,E,D, C,D, C,E,D,F, G,E,F,G,E,F,G,G,A,B,C,D,E,F,
+        E,C,D,E,E,F,G,A,G,F,G,E,F,G, F,A,G,F,E,D,E,D,C,D,E,F,G,A, F,A,G,A,B,C,G,A,B,C,D,E,F,G,
+        E,C,D,E,D,C,D,B,C,D,E,D,C,B, C,A,B,C,C,D,E,F,E,D,E,C,B,C, A,C,B,A,G,F,G,F,E,F,G,A,B,C,
+        A,C,B,C,B,A,B,C,D,C,B,C,A,B, E,E,F,E,D,D,E,D, C,E,C,A,G,G,F,G,
+        A,A,B,A,B,G,F,G, A,A,G,A,B,B,A,B, C,C,D,C,B,B,C,B, A,A,G,A,B,B,E,D,
+        C,C,D,F,E,E,G,E, C,F,E,F,D,G,F,G, E,C,B,C,E,G,G,A,B,G, E,C,D,E,C,E,E,D,C,B,
+        A,A,G,A,B,C,E,D,C,E, F,C,B,A,A,G,D,G,G, E,E,E,F,E,D, C,C,C,D,C,B,
+        A,C, C,F_B,A,F_B,G,G, G,G,G,A,G,F, E,E,E,F,E,D,
+        C,F_B,A,F_B,G,G, F,C,B,B, G,G,F, E,E,D,
+        C,C, C,B, C,C,B,B, A,A,G,G, F,F,E,E,
+        D,A,D,D, E,E,D,D, C,C,B,B, A,A,G,G,
+        F,D,G,D, E,Pause,Pause}
+Time_: {Minim,Minim, Minim,Minim, Minim,Minim, Minim,Minim,
+        Minim,Minim, Minim,Minim, Minim,Minim, Minim,Minim,
+        Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Crotchet,Crotchet,Minim, Minim,Minim, Crotchet,Crotchet,Crotchet,Crotchet, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,
+        Quaver,Semiquaver,Semiquaver,Quaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver,Semiquaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver,
+        Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Semiquaver,Semiquaver,Quaver,Quaver, Quaver,Semiquaver,Semiquaver,Quaver,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Minim,Minim, Quaver,Quaver,Quaver,Quaver,D_Crotchet,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver, D_Crotchet,Quaver,Quaver,Quaver,Quaver,Quaver,
+        Quaver,Quaver,Quaver,Quaver,D_Crotchet,Quaver, Crotchet,Crotchet,D_Crotchet,Quaver, Minim,D_Crotchet,Quaver, Minim,D_Crotchet,Quaver,
+        D_Minim,Crotchet, Minim,Minim, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet,
+        Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet, Crotchet,Crotchet,Crotchet,Crotchet,
+        D_Crotchet,Quaver,Crotchet,Crotchet, Minim,Crotchet,Crotchet}
 //------------------------------------
 #define Semibreve 0           //全音符
 #define D_Minim 1             //附点二分音符
@@ -72,7 +72,9 @@ Time_:{Minim,Minim, Minim,Minim, Minim,Minim, Minim,Minim,
 #define B 8
 #define Pause 9
 //------------------------------------
-#define Low 0
-#define Medium 1
-#define High 2
-#define None 3
+#define L_Low 0
+#define Low 1
+#define Medium 2
+#define High 3
+#define H_High 4
+#define None 5
