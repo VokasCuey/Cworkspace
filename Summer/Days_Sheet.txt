@@ -44,14 +44,23 @@ Time_:{D_Minim,Crotchet,Crotchet,Crotchet, D_Minim,Crotchet,Crotchet,Crotchet, D
 #define Interval 11           //音间隔
 //------------------------------------
 #define C 0
-#define D 1
-#define E 2
-#define F 3
-#define S_F 4
-#define G 5
-#define A 6
-#define B 7
-#define Pause 8
+#define S_C 1
+#define F_D 1
+#define D 2
+#define S_D 3
+#define F_E 3
+#define E 4
+#define F 5
+#define S_F 6
+#define F_G 6
+#define G 7
+#define S_G 8
+#define F_A 8
+#define A 9
+#define S_A 10
+#define F_B 10
+#define B 11
+#define Pause 12
 //------------------------------------
 #define L_Low 0
 #define Low 1

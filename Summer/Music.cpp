@@ -1,4 +1,4 @@
-//Composition List: {1:卡农, 2:清华校歌, 3:闪亮的日子 , 4:千本樱}
+//Composition List: {1:卡农, 2:清华校歌, 3:闪亮的日子, 4:千本樱}
 #include "msp430.h"
 const unsigned char Group[6] = {0, 1, 2, 3, 4, 5}; //极低/低/中/高/极高/任意/任意音(播放器)
 const unsigned char Scale[6][13] = {{249, 235, 222, 210, 198, 187, 176, 166, 157, 148, 140, 132, 0},
