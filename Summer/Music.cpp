@@ -1,6 +1,6 @@
-//Composition List: {1:卡农, 2:清华校歌, 3:闪亮的日子, 4:千本樱}
+//Composition List: {1:卡农, 2:清华校歌, 3:闪亮的日子, 4:千本樱, 5:One more time, one more chance}
 #include "msp430.h"
-const unsigned char Group[6] = {0, 1, 2, 3, 4, 5}; //极低/低/中/高/极高/任意/任意音(播放器)
+const unsigned char Group[6] = {0, 1, 2, 3, 4, 5}; //极低/低/中/高/极高/任意音(播放器)
 const unsigned char Scale[6][13] = {{249, 235, 222, 210, 198, 187, 176, 166, 157, 148, 140, 132, 0},
                                     {124, 117, 111, 104, 98, 93, 88, 83, 78, 73, 69, 65, 0},
                                     {62, 58, 55, 52, 49, 46, 43, 41, 38, 36, 34, 32, 0},
@@ -12,38 +12,38 @@ const unsigned char Piano_Scale[3][7] = {{124, 111, 98, 93, 83, 73, 65},
                                          {62, 55, 49, 46, 41, 36, 32},
                                          {30, 27, 24, 22, 20, 18, 16}};                                               //音阶(电子琴)
 const unsigned long int Time[12] = {131072, 98304, 65536, 49152, 32768, 24576, 16384, 12288, 8192, 4096, 2048, 1024}; //时值  Crotchet=60
-#define Standard_Speed 60
-const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6}; //按键
+#define Standard_Speed 60                                                                                             //速度 标准速度 Crotchet=60
+const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6};                                              //按键
 //------------------------------------
-#define Gp 0
-#define Se 1
-#define Te 2
+#define Gp 0 //音高
+#define Se 1 //音阶
+#define Te 2 //时值
 //------------------------------------
-#define L_Low 0
-#define Low 1
-#define Medium 2
-#define High 3
-#define H_High 4
-#define None 5
+#define L_Low 0  //极低
+#define Low 1    //低
+#define Medium 2 //中
+#define High 3   //高
+#define H_High 4 //极高
+#define None 5   //任意
 //------------------------------------
-#define C 0
-#define S_C 1
-#define F_D 1
-#define D 2
-#define S_D 3
-#define F_E 3
-#define E 4
-#define F 5
-#define S_F 6
-#define F_G 6
-#define G 7
-#define S_G 8
-#define F_A 8
-#define A 9
-#define S_A 10
-#define F_B 10
-#define B 11
-#define Pause 12
+#define C 0      //do
+#define S_C 1    //升do
+#define F_D 1    //降re
+#define D 2      //re
+#define S_D 3    //升re
+#define F_E 3    //降mi
+#define E 4      //mi
+#define F 5      //fa
+#define S_F 6    //升fa
+#define F_G 6    //降so
+#define G 7      //so
+#define S_G 8    //升so
+#define F_A 8    //降la
+#define A 9      //la
+#define S_A 10   //升la
+#define F_B 10   //降si
+#define B 11     //si
+#define Pause 12 //休止
 //------------------------------------
 #define Semibreve 0           //全音符
 #define D_Minim 1             //附点二分音符
@@ -58,7 +58,7 @@ const unsigned char Key[7] = {BIT0, BIT1, BIT2, BIT3, BIT4, BIT5, BIT6}; //按�
 #define hemidemisemiquaver 10 //六十四分音符
 #define Interval 11           //音间隔
 //------------------------------------//谱子
-#define Composition_Num 4
+#define Composition_Num 5
 #define Canon_Num 391
 #define Canon_Speed 60
 const unsigned int Canon_Sheet[3][Canon_Num] = {{High, High, High, Medium, Medium, Medium, Medium, Medium,
@@ -354,6 +354,179 @@ const unsigned int Sakura_Sheet[3][Sakura_Num] = {{Medium, Medium, Medium, Mediu
                                                    Quaver, Quaver, Quaver, Quaver, Crotchet, Quaver, Quaver,
                                                    Crotchet, Crotchet, Crotchet, Crotchet,
                                                    Quaver, Quaver, Quaver, Quaver, Minim}};
+#define One_Num 211
+#define One_Speed 60
+const unsigned int One_Sheet[3][One_Num] = {{Low, Low, Medium, Low,
+                                             Medium, Medium, Medium,
+                                             Medium, Low, Medium,
+                                             Medium,
+
+                                             Low, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium,
+                                             Low,
+                                             Low,
+
+                                             None, Low, Low, Medium, Medium, Medium,
+                                             Medium, Medium, Low, Low,
+                                             None, None, Low, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium,
+
+                                             None, Low, Low, Medium, Medium, Medium,
+                                             Medium, Medium, Low, Low,
+                                             None, None, Low, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium,
+
+                                             Medium, Medium, Medium,
+                                             Medium, Medium, Medium,
+                                             Medium, Medium, Low, Medium,
+                                             Medium, Medium, Medium,
+
+                                             Medium, Medium, Medium,
+                                             Medium, Medium, Medium,
+                                             Medium, Medium, Low, Medium,
+                                             Medium, Medium, Medium,
+
+                                             None, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Low, Low,
+                                             None, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium, Medium,
+
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+
+                                             None, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Low, Low,
+                                             None, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium, Medium,
+
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             None, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+                                             Medium, Medium, Medium, Medium, Medium, Medium, Medium, Medium,
+
+                                             Medium,
+                                             Low, Low, Medium, Low,
+                                             Medium, Medium, Medium,
+                                             Medium, Low, Medium,
+
+                                             Medium, Medium,
+                                             Medium},
+                                            {C, G, C, G,
+                                             C, C, D,
+                                             E, A, C,
+                                             D,
+
+                                             C, G, F, E,
+                                             F, E, C, C,
+                                             G,
+                                             B,
+
+                                             Pause, G, G, C, D, F,
+                                             E, C, G, G,
+                                             Pause, Pause, A, G, F, E, F,
+                                             F, G, F, E, E,
+
+                                             Pause, G, G, C, D, F,
+                                             E, C, G, G,
+                                             Pause, Pause, A, G, F, E, F,
+                                             F, G, F, E, C,
+
+                                             D, G, E,
+                                             D, E, F,
+                                             E, D, G, D,
+                                             E, D, C,
+
+                                             D, G, E,
+                                             D, E, F,
+                                             E, D, G, D,
+                                             D, D, C,
+
+                                             Pause, G, G, F, E,
+                                             E, E, C, G, G,
+                                             Pause, G, G, F, E,
+                                             E, E, C, D, E, D,
+
+                                             Pause, F, F, F, G, F, E, F,
+                                             Pause, F, F, F, G, F, E, F,
+                                             Pause, D, D, D, D, D, E, F,
+                                             A, G, G, E, G, D, A, G,
+
+                                             Pause, G, G, F, E,
+                                             E, E, C, G, G,
+                                             Pause, G, G, F, E,
+                                             E, E, C, D, E, D,
+
+                                             Pause, F, F, F, G, F, E, F,
+                                             Pause, F, F, F, G, F, E, F,
+                                             Pause, D, D, D, D, D, E, F,
+                                             A, G, G, E, G, D, A, G,
+
+                                             G,
+                                             C, G, C, G,
+                                             C, C, D,
+                                             E, A, C,
+
+                                             F, G,
+                                             C},
+                                            {Crotchet, Crotchet, Crotchet, Crotchet,
+                                             Minim, Crotchet, Crotchet,
+                                             Crotchet, Crotchet, Minim,
+                                             Semibreve,
+
+                                             Crotchet, Crotchet, Crotchet, Crotchet,
+                                             Crotchet, Quaver, D_Crotchet, Crotchet,
+                                             Semibreve,
+                                             Semibreve,
+
+                                             Crotchet, Quaver, Quaver, Crotchet, Quaver, D_Crotchet,
+                                             Crotchet, Quaver, Quaver, Crotchet,
+                                             Crotchet, Quaver, Quaver, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Quaver, Quaver, Quaver, Quaver, Crotchet,
+
+                                             Crotchet, Quaver, Quaver, Crotchet, Quaver, D_Crotchet,
+                                             Crotchet, Quaver, Quaver, Crotchet,
+                                             Crotchet, Quaver, Quaver, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Quaver, Quaver, Quaver, Quaver, Crotchet,
+
+                                             Minim, Crotchet, D_Minim,
+                                             Quaver, Quaver, Crotchet,
+                                             Crotchet, Crotchet, Crotchet, Crotchet,
+                                             Crotchet, Crotchet, Minim,
+
+                                             Minim, Crotchet, D_Minim,
+                                             Quaver, Quaver, Crotchet,
+                                             Crotchet, Crotchet, Crotchet, Crotchet,
+                                             Crotchet, Crotchet, Minim,
+
+                                             Crotchet, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Crotchet, Crotchet, Quaver, Quaver, Crotchet,
+                                             Crotchet, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Crotchet, Crotchet, Quaver, Quaver, Quaver, Quaver,
+
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+
+                                             Crotchet, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Crotchet, Crotchet, Quaver, Quaver, Crotchet,
+                                             Crotchet, Quaver, Quaver, Quaver, D_Crotchet,
+                                             Crotchet, Crotchet, Quaver, Quaver, Quaver, Quaver,
+
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+                                             Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver, Quaver,
+
+                                             Semibreve,
+                                             Crotchet, Crotchet, Crotchet, Crotchet,
+                                             Minim, Crotchet, Crotchet,
+                                             Crotchet, Crotchet, Minim,
+
+                                             Minim, Minim,
+                                             Semibreve}};
 //------------------------------------
 #define Piano 0
 #define Player 1
@@ -382,8 +555,9 @@ void Canon_Play();
 void Tsinghua_Play();
 void Days_Play();
 void Sakura_Play();
+void One_Play();
 typedef void (*Music_Play)();
-Music_Play Play[Composition_Num] = {Canon_Play, Tsinghua_Play, Days_Play, Sakura_Play};
+Music_Play Play[Composition_Num] = {Canon_Play, Tsinghua_Play, Days_Play, Sakura_Play, One_Play};
 int main(void)
 {
     WDTCTL = WDTPW + WDTHOLD; //stop watchdog timer
@@ -497,6 +671,15 @@ void Sakura_Play()
         Interval_G(I);
     }
     TA1CCR0 = 0;
+}
+void One_Play()
+{
+    for (note_Num = 0; note_Num < One_Num; note_Num++)
+    {
+        TA1CCR0 = Scale[One_Sheet[Gp][note_Num]][One_Sheet[Se][note_Num]];
+        Delay((unsigned long int)(Time[One_Sheet[Te][note_Num]]) * ((float)(Standard_Speed) / (float)(One_Speed)));
+        Interval_G(I);
+    }
 }
 #pragma vector = PORT1_VECTOR
 __interrupt void Key_Press(void)
