@@ -1,4 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
+#include <string.h>
 using namespace std;
-int a = 0;
+
+int main()
+{
+    char test[1000];
+    memset(test,0,sizeof(test));
+    cout << strlen(test) << endl;
+    system("pause");
+    return 0;
+}
