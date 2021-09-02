@@ -41,7 +41,7 @@ Status Insert_LinkQueue(LinkQueue &Q, ElemType e)
     p = (Node *)malloc(sizeof(Node));
     if (!p)
         return OVERFLOW;
-    p->Data = NULL;
+    p->Next = NULL;
     p->Data = e;
     Q.Rear->Next = p;
     Q.Rear = p;
@@ -52,10 +52,10 @@ Status Delete_LinkQueue(LinkQueue &Q)
 {
     if (Q.Front == Q.Rear)
         return ERROR;
-    Node *p=Q.Front->Next;
-    Q.Front->Next=p->Next;
-    if (p==Q.Rear)
-    Q.Rear=Q.Front;
+    Node *p = Q.Front->Next;
+    Q.Front->Next = p->Next;
+    if (p == Q.Rear)
+        Q.Rear = Q.Front;
     free(p);
     return OK;
 }
@@ -64,9 +64,9 @@ Status Destroy_LinkQueue(LinkQueue &Q)
 {
     while (!Q.Front)
     {
-        Q.Rear=Q.Front->Next;
+        Q.Rear = Q.Front->Next;
         free(Q.Front);
-        Q.Front=Q.Rear;
+        Q.Front = Q.Rear;
     }
 }
 

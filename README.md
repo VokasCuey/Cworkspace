@@ -1,9 +1,11 @@
 # Cworkplace
+
 This space is used to study C/C++.
 
 ---
 
 ## Patr.1 快捷键
+
 ---
 
 折叠当前区块：Shift+Ctrl+[
@@ -23,3 +25,5 @@ This space is used to study C/C++.
 呼出命令栏：Shift+Ctrl+P
 
 打开 Markdown 预览：Ctrl+K,Ctrl+V
+
+关闭侧边栏：Ctrl+B
