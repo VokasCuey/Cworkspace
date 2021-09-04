@@ -27,13 +27,11 @@ typedef struct Tree_Node
 typedef struct Tree
 {
     TNode *Root;
-    int Depth;
     int Node_Num;
 } Tree;
 
 Status Init_Tree(Tree &T)
 {
-    T.Depth = 0;
     T.Node_Num = 0;
     T.Root = NULL;
     return OK;
@@ -54,6 +52,8 @@ Status Build_Tree(Tree &T, int Parent, int Child)
             return ERROR;
     }
     p->Degree++;
+    if (c)
+        return ERROR;
     c->Parent = p;
     if (p->First_Child == NULL)
     {
