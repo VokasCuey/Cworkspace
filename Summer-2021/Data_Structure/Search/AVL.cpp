@@ -119,14 +119,14 @@ int Max_Depth(TNode *Node)
     int Depth = 0;
     if (Node)
     {
-        int L_Depth=Max_Depth(Node->Child[Left]);
-        int R_Depth=Max_Depth(Node->Child[Right]);
+        int L_Depth = Max_Depth(Node->Child[Left]);
+        int R_Depth = Max_Depth(Node->Child[Right]);
         if (Node->Depth > Depth)
             Depth = Node->Depth;
-        if (L_Depth>Depth)
-            Depth=L_Depth;
-        if (R_Depth>Depth)
-            Depth=R_Depth;
+        if (L_Depth > Depth)
+            Depth = L_Depth;
+        if (R_Depth > Depth)
+            Depth = R_Depth;
     }
     return Depth;
 }
@@ -136,7 +136,7 @@ Status Insert_BF_Mod(Tree &T, TNode *Node)
     int Depth = Node->Depth;
     while (Node != T.Root)
     {
-        if ((Max_Depth(Node) <= Depth)&&(Depth_Num(Node,Depth)==1))
+        if ((Max_Depth(Node) <= Depth) && (Depth_Num(Node, Depth) == 1))
             Node == Node->Parent->Child[Left] ? Node->Parent->B_Factor++ : Node->Parent->B_Factor--;
         else
             break;
@@ -208,27 +208,80 @@ Status Insert(Tree &T, int Key, char *Word)
     return OK;
 }
 
+Status Delete_Depth_Mod(TNode *Node)
+{
+    if (Node)
+    {
+        Node->Depth--;
+        Delete_Depth_Mod(Node->Child[Left]);
+        Delete_Depth_Mod(Node->Child[Right]);
+    }
+    return OK;
+}
+
 Status Delete_BF_Mod(Tree &T, TNode *Node, int Pos)
 {
+    if (Pos == -1)
+    {
+        int Old_Depth = Node->Depth;
+        Delete_Depth_Mod(Node);
+        while (Node != T.Root)
+        {
+            if (Max_Depth(Node) < Old_Depth)
+                (Node = Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
+            else
+                break;
+            Node = Node->Parent;
+        }
+    }
+    if ((Pos == Left) || (Pos == Right))
+    {
+        int Old_Depth = Node->Depth + 1;
+        Delete_Depth_Mod(Node->Child[Pos]);
+        Node->Child[Pos]->B_Factor = EH;
+        while (Node != T.Root)
+        {
+            if (Max_Depth(Node) < Old_Depth)
+                (Node = Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
+            else
+                break;
+            Node = Node->Parent;
+        }
+    }
+    if (Pos == -2)
+    {
+    }
     return OK;
 }
 
 Status Delete(Tree &T, int Key)
 {
-    /*TNode *p = T.Root;
-    while (p->Data.Key = !Key && p)
+    TNode *p = T.Root;
+    while ((p->Data.Key != Key) && p)
         Key < p->Data.Key ? p = p->Child[Left] : p = p->Child[Right];
     if (!p)
         return ERROR;
-    if (p->Child[Left])
+    if (!(p->Child[Left] || p->Child[Right]))
     {
+        Delete_BF_Mod(T, p, -1);
+        (p == p->Parent->Child[Left]) ? p->Parent->Child[Left] = NULL : p->Parent->Child[Right] = NULL;
     }
-    else if (p->Child[Right])
+    else if (!p->Child[Right])
     {
+        Delete_BF_Mod(T, p, Left);
+        (p == p->Parent->Child[Left]) ? Build(p->Parent, p->Child[Left], Left) : Build(p->Parent, p->Child[Left], Right);
+    }
+    else if (!p->Child[Left])
+    {
+        Delete_BF_Mod(T, p, Right);
+        (p == p->Parent->Child[Left]) ? Build(p->Parent, p->Child[Right], Left) : Build(p->Parent, p->Child[Right], Right);
     }
     else
     {
-    }*/
+        Delete_BF_Mod(T, p, -2);
+    }
+    free(p);
+    Balance_Tree(T, T.Root);
     return OK;
 }
 
@@ -325,20 +378,25 @@ int main()
                 fscanf(op, "%d %s", &Key, Insert_Word);
                 Insert(T, Key, Insert_Word);
             }
-            if (Order[0] == 'd')
-                Delete(T, Key);
-            if (Order[0] == 'f')
+            else if (Order[0] == 'd')
+            {
+                fscanf(op,"%d",&Key);
+                Delete(T,Key);
+            }
+            else if (Order[0] == 'f')
             {
                 fscanf(op, "%d", &Key);
                 fprintf(wp, "%s\n", Find(T, Key));
             }
-            if (Order[0] == 'c')
+            else if (Order[0] == 'c')
             {
                 char New_Word[MAX_WORD_SIZE];
                 memset(New_Word, 0, sizeof(New_Word));
                 fscanf(op, "%d %s", &Key, New_Word);
                 Change(T, Key, New_Word);
             }
+            else
+                return -1;
         }
         fclose(rp);
         fclose(op);
