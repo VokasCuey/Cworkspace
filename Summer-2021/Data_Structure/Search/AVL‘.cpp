@@ -46,6 +46,62 @@ Status Build(TNode *Parent, TNode *Child, int Pos)
     return OK;
 }
 
+Status LL(Tree &T, TNode *Node)
+{
+    TNode *p = Node->Child[Left];
+    if (Node->Parent->Child[Left] == Node)
+        Node->Parent->Child[Left] = p;
+    else if (Node->Parent->Child[Right] == Node)
+        Node->Parent->Child[Right] = p;
+    else
+        return ERROR;
+    p->Parent = Node->Parent;
+    Node->Parent = p;
+    Node->Child[Left] = p->Child[Right];
+    p->Child[Right]->Parent = Node;
+    p->Child[Right] = Node;
+    Node->B_Factor = EH;
+    p->B_Factor = EH;
+    if (T.Root == Node)
+        T.Root = p;
+    return OK;
+}
+
+Status RR(Tree &T, TNode *Node)
+{
+    TNode *p = Node->Child[Right];
+    if (Node->Parent->Child[Left] == Node)
+        Node->Parent->Child[Left] = p;
+    else if (Node->Parent->Child[Right] == Node)
+        Node->Parent->Child[Right] = p;
+    else
+        return ERROR;
+    p->Parent = Node->Parent;
+    Node->Parent = p;
+    Node->Child[Right] = p->Child[Left];
+    p->Child[Left]->Parent = Node;
+    p->Child[Left] = Node;
+    Node->B_Factor = EH;
+    p->B_Factor = EH;
+    if (T.Root == Node)
+        T.Root = p;
+    return OK;
+}
+
+Status LR(Tree &T, TNode *Node)
+{
+    RR(T, Node->Child[Left]);
+    LL(T, Node);
+    return OK;
+}
+
+Status RL(Tree &T, TNode *Node)
+{
+    LL(T, Node->Child[Right]);
+    RR(T, Node);
+    return OK;
+}
+
 int Depth_Num(TNode *Node, int Depth)
 {
     int Num = 0;
@@ -75,102 +131,6 @@ int Max_Depth(TNode *Node)
     return Depth;
 }
 
-Status Depth_Mod(TNode *Root, int Depth)
-{
-    if (Root)
-    {
-        Root->Depth = Depth;
-        Depth++;
-        Depth_Mod(Root->Child[Left], Depth);
-        Depth_Mod(Root->Child[Right], Depth);
-    }
-    return OK;
-}
-
-Status LL(Tree &T, TNode *Node)
-{
-    TNode *p = Node->Child[Left];
-    if (Node != T.Root)
-        Node->Parent->Child[Left] == Node ? Build(Node->Parent, p, Left) : Build(Node->Parent, p, Right);
-    if (T.Root == Node)
-    {
-        T.Root = p;
-        p->Parent = NULL;
-    }
-    if (p->Child[Right])
-        Build(Node, p->Child[Right], Left);
-    else
-        Node->Child[Left] = NULL;
-    Build(p, Node, Right);
-    Depth_Mod(T.Root, 1);
-    p->B_Factor = EH;
-    if (Node->Child[Left])
-    {
-        if (Node->Child[Right])
-            Node->B_Factor = Max_Depth(Node->Child[Left]) - Max_Depth(Node->Child[Right]);
-        else
-            Node->B_Factor = LH;
-    }
-    else
-    {
-        if (Node->Child[Right])
-            Node->B_Factor = RH;
-        else
-            Node->B_Factor = EH;
-    }
-    return OK;
-}
-
-Status RR(Tree &T, TNode *Node)
-{
-    TNode *p = Node->Child[Right];
-    if (Node != T.Root)
-        Node->Parent->Child[Left] == Node ? Build(Node->Parent, p, Left) : Build(Node->Parent, p, Right);
-    if (T.Root == Node)
-    {
-        T.Root = p;
-        p->Parent = NULL;
-    }
-    if (p->Child[Left])
-    {
-        Build(Node, p->Child[Left], Right);
-    }
-    else
-        Node->Child[Right] = NULL;
-    Build(p, Node, Left);
-    Depth_Mod(T.Root, 1);
-    p->B_Factor = EH;
-    if (Node->Child[Right])
-    {
-        if (Node->Child[Left])
-            Node->B_Factor = Max_Depth(Node->Child[Left]) - Max_Depth(Node->Child[Right]);
-        else
-            Node->B_Factor = RH;
-    }
-    else
-    {
-        if (Node->Child[Left])
-            Node->B_Factor = LH;
-        else
-            Node->B_Factor = EH;
-    }
-    return OK;
-}
-
-Status LR(Tree &T, TNode *Node)
-{
-    RR(T, Node->Child[Left]);
-    LL(T, Node);
-    return OK;
-}
-
-Status RL(Tree &T, TNode *Node)
-{
-    LL(T, Node->Child[Right]);
-    RR(T, Node);
-    return OK;
-}
-
 Status Insert_BF_Mod(Tree &T, TNode *Node)
 {
     int Depth = Node->Depth;
@@ -185,7 +145,7 @@ Status Insert_BF_Mod(Tree &T, TNode *Node)
     return OK;
 }
 
-Status Insert_Balance_Tree(Tree &T, TNode *Root)
+Status Balance_Tree(Tree &T, TNode *Root)
 {
     if (Root)
     {
@@ -195,6 +155,8 @@ Status Insert_Balance_Tree(Tree &T, TNode *Root)
                 LL(T, Root);
             else if (Root->Child[Left]->B_Factor == RH)
                 LR(T, Root);
+            else if (Root->Child[Left]->B_Factor == EH)
+                LL(T, Root);
             else
                 return ERROR;
         }
@@ -204,63 +166,49 @@ Status Insert_Balance_Tree(Tree &T, TNode *Root)
                 RR(T, Root);
             else if (Root->Child[Right]->B_Factor == LH)
                 RL(T, Root);
+            else if (Root->Child[Right]->B_Factor == EH)
+                RR(T, Root);
             else
                 return ERROR;
         }
         if ((Root->B_Factor > LH) || (Root->B_Factor < RH))
             return ERROR;
-        if (Root != T.Root)
-            Insert_Balance_Tree(T, Root->Parent);
+        Balance_Tree(T, Root->Child[Left]);
+        Balance_Tree(T, Root->Child[Right]);
     }
     return OK;
 }
 
 Status Insert(Tree &T, int Key, char *Word)
 {
-    if (!T.Root)
+    TNode *p = T.Root, *pp = NULL;
+    int Tag = 0;
+    while (p)
     {
-        T.Root = (TNode *)malloc(sizeof(TNode));
-        T.Root->Data.Key = Key;
-        T.Root->Data.Word = (char *)malloc(sizeof(char) * (strlen(Word) - 1));
-        strcpy(T.Root->Data.Word, Word);
-        T.Root->Parent = NULL;
-        T.Root->Child[Left] = NULL;
-        T.Root->Child[Right] = NULL;
-        T.Root->Depth = 1;
-        T.Root->B_Factor = EH;
-    }
-    else
-    {
-        TNode *p = T.Root, *pp = NULL;
-        int Tag = 0;
-        while (p)
+        pp = p;
+        if (Key <= p->Data.Key)
         {
-            pp = p;
-            if (Key <= p->Data.Key)
-            {
-                p = p->Child[Left];
-                Tag = Left;
-            }
-            else
-            {
-                p = p->Child[Right];
-                Tag = Right;
-            }
+            p = p->Child[Left];
+            Tag = Left;
         }
-        p = (TNode *)malloc(sizeof(TNode));
-        p->Parent = NULL;
-        p->Child[Left] = NULL;
-        p->Child[Right] = NULL;
-        p->B_Factor = EH;
-        p->Depth = pp->Depth + 1;
-        p->Data.Key = Key;
-        p->Data.Word = (char *)malloc(sizeof(char) * (strlen(Word) + 1));
-        strcpy(p->Data.Word, Word);
-        Build(pp, p, Tag);
-        Insert_BF_Mod(T, p);
-        if (pp != T.Root)
-            Insert_Balance_Tree(T, pp);
+        else
+        {
+            p = p->Child[Right];
+            Tag = Right;
+        }
     }
+    p = (TNode *)malloc(sizeof(TNode));
+    p->Parent = NULL;
+    p->Child[Left] = NULL;
+    p->Child[Right] = NULL;
+    p->B_Factor = EH;
+    p->Depth = pp->Depth + 1;
+    p->Data.Key = Key;
+    p->Data.Word = (char *)malloc(sizeof(char) * (strlen(Word) + 1));
+    strcpy(p->Data.Word, Word);
+    Build(pp, p, Tag);
+    Insert_BF_Mod(T, p);
+    Balance_Tree(T, T.Root);
     return OK;
 }
 
@@ -273,7 +221,7 @@ Status Delete_BF_Mod(Tree &T, TNode *Node, int Pos)
         while (Node != T.Root)
         {
             if (Max_Depth(Node) < Old_Depth)
-                (Node == Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
+                (Node = Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
             else
                 break;
             Node = Node->Parent;
@@ -287,17 +235,12 @@ Status Delete_BF_Mod(Tree &T, TNode *Node, int Pos)
         while (Node != T.Root)
         {
             if (Max_Depth(Node) < Old_Depth)
-                (Node == Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
+                (Node = Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
             else
                 break;
             Node = Node->Parent;
         }
     }
-    return OK;
-}
-
-Status Delete_Balance_Tree(Tree &T, TNode *Root)
-{
     return OK;
 }
 
@@ -397,6 +340,7 @@ Status Delete(Tree &T, int Key)
         Build(Left_Max_Node, p->Child[Right], Right);
     }
     free(p);
+    Balance_Tree(T, T.Root);
     return OK;
 }
 
@@ -441,11 +385,19 @@ Status Change(Tree &T, int Key, char *New_Word)
 
 Status In_Tree(FILE *rp, Tree &T)
 {
-    char Skip[MAX_SKIP_NUM];
-    fgets(Skip, MAX_SKIP_NUM, rp);
     int Key = 0;
     char Word[MAX_WORD_SIZE];
     memset(Word, 0, sizeof(Word));
+    fscanf(rp, "%d %s", &Key, Word);
+    T.Root = (TNode *)malloc(sizeof(TNode));
+    T.Root->Data.Key = Key;
+    T.Root->Data.Word = (char *)malloc(sizeof(char) * (strlen(Word) - 1));
+    strcpy(T.Root->Data.Word, Word);
+    T.Root->Parent = NULL;
+    T.Root->Child[Left] = NULL;
+    T.Root->Child[Right] = NULL;
+    T.Root->Depth = 1;
+    T.Root->B_Factor = EH;
     while (!feof(rp))
     {
         memset(Word, 0, sizeof(Word));
@@ -469,6 +421,8 @@ int main()
     }
     else
     {
+        char Skip[MAX_SKIP_NUM];
+        fgets(Skip, MAX_SKIP_NUM, rp);
         In_Tree(rp, T);
         while (!feof(op))
         {
