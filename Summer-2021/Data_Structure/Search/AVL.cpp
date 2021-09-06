@@ -87,6 +87,26 @@ Status Depth_Mod(TNode *Root, int Depth)
     return OK;
 }
 
+Status BF_Mod(Tree &T, TNode *Node)
+{
+    if (Node)
+    {
+        if (!(Node->Child[Left] || Node->Child[Right]))
+        {
+            Node->B_Factor = EH;
+        }
+        else if (!Node->Child[Right])
+            Node->B_Factor = Max_Depth(Node->Child[Left]) - Node->Depth;
+        else if (!Node->Child[Left])
+            Node->B_Factor = Node->Depth - Max_Depth(Node->Child[Right]);
+        else
+            Node->B_Factor = Max_Depth(Node->Child[Left]) - Max_Depth(Node->Child[Right]);
+        BF_Mod(T, Node->Child[Left]);
+        BF_Mod(T, Node->Child[Right]);
+    }
+    return OK;
+}
+
 Status LL(Tree &T, TNode *Node)
 {
     TNode *p = Node->Child[Left];
@@ -103,21 +123,7 @@ Status LL(Tree &T, TNode *Node)
         Node->Child[Left] = NULL;
     Build(p, Node, Right);
     Depth_Mod(T.Root, 1);
-    p->B_Factor = EH;
-    if (Node->Child[Left])
-    {
-        if (Node->Child[Right])
-            Node->B_Factor = Max_Depth(Node->Child[Left]) - Max_Depth(Node->Child[Right]);
-        else
-            Node->B_Factor = LH;
-    }
-    else
-    {
-        if (Node->Child[Right])
-            Node->B_Factor = RH;
-        else
-            Node->B_Factor = EH;
-    }
+    BF_Mod(T, T.Root);
     return OK;
 }
 
@@ -139,21 +145,7 @@ Status RR(Tree &T, TNode *Node)
         Node->Child[Right] = NULL;
     Build(p, Node, Left);
     Depth_Mod(T.Root, 1);
-    p->B_Factor = EH;
-    if (Node->Child[Right])
-    {
-        if (Node->Child[Left])
-            Node->B_Factor = Max_Depth(Node->Child[Left]) - Max_Depth(Node->Child[Right]);
-        else
-            Node->B_Factor = RH;
-    }
-    else
-    {
-        if (Node->Child[Left])
-            Node->B_Factor = LH;
-        else
-            Node->B_Factor = EH;
-    }
+    BF_Mod(T, T.Root);
     return OK;
 }
 
@@ -168,20 +160,6 @@ Status RL(Tree &T, TNode *Node)
 {
     LL(T, Node->Child[Right]);
     RR(T, Node);
-    return OK;
-}
-
-Status Insert_BF_Mod(Tree &T, TNode *Node)
-{
-    int Depth = Node->Depth;
-    while (Node != T.Root)
-    {
-        if ((Max_Depth(Node) <= Depth) && (Depth_Num(Node, Depth) == 1))
-            Node == Node->Parent->Child[Left] ? Node->Parent->B_Factor++ : Node->Parent->B_Factor--;
-        else
-            break;
-        Node = Node->Parent;
-    }
     return OK;
 }
 
@@ -257,47 +235,31 @@ Status Insert(Tree &T, int Key, char *Word)
         p->Data.Word = (char *)malloc(sizeof(char) * (strlen(Word) + 1));
         strcpy(p->Data.Word, Word);
         Build(pp, p, Tag);
-        Insert_BF_Mod(T, p);
+        BF_Mod(T, T.Root);
         if (pp != T.Root)
             Insert_Balance_Tree(T, pp);
     }
     return OK;
 }
 
-Status Delete_BF_Mod(Tree &T, TNode *Node, int Pos)
-{
-    if (Pos == -1)
-    {
-        int Old_Depth = Node->Depth;
-        Node->Depth--;
-        while (Node != T.Root)
-        {
-            if (Max_Depth(Node) < Old_Depth)
-                (Node == Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
-            else
-                break;
-            Node = Node->Parent;
-        }
-    }
-    if ((Pos == Left) || (Pos == Right))
-    {
-        int Old_Depth = Node->Depth + 1;
-        Node->Depth--;
-        Node->Child[Pos]->B_Factor = EH;
-        while (Node != T.Root)
-        {
-            if (Max_Depth(Node) < Old_Depth)
-                (Node == Node->Parent->Child[Left]) ? Node->Parent->B_Factor-- : Node->Parent->B_Factor++;
-            else
-                break;
-            Node = Node->Parent;
-        }
-    }
-    return OK;
-}
-
 Status Delete_Balance_Tree(Tree &T, TNode *Root)
 {
+    if (Root->B_Factor > LH)
+    {
+        if (Root->Child[Left]->B_Factor >= 0)
+            LL(T, Root);
+        else
+            LR(T, Root);
+    }
+    else if (Root->B_Factor < RH)
+    {
+        if (Root->Child[Right]->B_Factor <= 0)
+            RR(T, Root);
+        else
+            RL(T, Root);
+    }
+    if (Root != T.Root)
+        Delete_Balance_Tree(T, Root->Parent);
     return OK;
 }
 
@@ -339,16 +301,7 @@ Status Delete(Tree &T, int Key)
                 Left_Max_Node = Left_Max_Node->Child[Right];
             int Old_Depth = Left_Max_Node->Depth;
             Left_Max_Node->Depth = p->Depth;
-            (Left_Max_Node == Left_Max_Node->Parent->Child[Left]) ? Left_Max_Node->Parent->B_Factor-- : Left_Max_Node->Parent->B_Factor++;
             TNode *s = Left_Max_Node->Parent;
-            while (s != T.Root)
-            {
-                if (Max_Depth(s) < Old_Depth)
-                    (s == s->Parent->Child[Left]) ? s->Parent->B_Factor-- : s->Parent->B_Factor++;
-                else
-                    break;
-                s = s->Parent;
-            }
             (Left_Max_Node == Left_Max_Node->Parent->Child[Left]) ? Left_Max_Node->Parent->Child[Left] = NULL : Left_Max_Node->Parent->Child[Right] = NULL;
             if (p->Child[Left])
                 Build(Left_Max_Node, p->Child[Left], Left);
@@ -356,22 +309,27 @@ Status Delete(Tree &T, int Key)
             Left_Max_Node->B_Factor = p->B_Factor;
             T.Root = Left_Max_Node;
             T.Root->Parent = NULL;
+            BF_Mod(T, T.Root);
+            Delete_Balance_Tree(T, s);
         }
     }
     else if (!(p->Child[Left] || p->Child[Right]))
     {
-        Delete_BF_Mod(T, p, -1);
         (p == p->Parent->Child[Left]) ? p->Parent->Child[Left] = NULL : p->Parent->Child[Right] = NULL;
+        BF_Mod(T, T.Root);
+        Delete_Balance_Tree(T, p->Parent);
     }
     else if (!p->Child[Right])
     {
-        Delete_BF_Mod(T, p, Left);
         (p == p->Parent->Child[Left]) ? Build(p->Parent, p->Child[Left], Left) : Build(p->Parent, p->Child[Left], Right);
+        BF_Mod(T, T.Root);
+        Delete_Balance_Tree(T, p->Parent);
     }
     else if (!p->Child[Left])
     {
-        Delete_BF_Mod(T, p, Right);
         (p == p->Parent->Child[Left]) ? Build(p->Parent, p->Child[Right], Left) : Build(p->Parent, p->Child[Right], Right);
+        BF_Mod(T, T.Root);
+        Delete_Balance_Tree(T, p->Parent);
     }
     else
     {
@@ -380,21 +338,15 @@ Status Delete(Tree &T, int Key)
             Left_Max_Node = Left_Max_Node->Child[Right];
         int Old_Depth = Left_Max_Node->Depth;
         Left_Max_Node->Depth = p->Depth;
-        (Left_Max_Node == Left_Max_Node->Parent->Child[Left]) ? Left_Max_Node->Parent->B_Factor-- : Left_Max_Node->Parent->B_Factor++;
         TNode *s = Left_Max_Node->Parent;
-        while (s != T.Root)
-        {
-            if (Max_Depth(s) < Old_Depth)
-                (s == s->Parent->Child[Left]) ? s->Parent->B_Factor-- : s->Parent->B_Factor++;
-            else
-                break;
-            s = s->Parent;
-        }
+        Delete_Balance_Tree(T, Left_Max_Node->Parent);
         (Left_Max_Node == Left_Max_Node->Parent->Child[Left]) ? Left_Max_Node->Parent->Child[Left] = NULL : Left_Max_Node->Parent->Child[Right] = NULL;
         (p == p->Parent->Child[Left]) ? Build(p->Parent, Left_Max_Node, Left) : Build(p->Parent, Left_Max_Node, Right);
         if (p->Child[Left])
             Build(Left_Max_Node, p->Child[Left], Left);
         Build(Left_Max_Node, p->Child[Right], Right);
+        BF_Mod(T, T.Root);
+        Delete_Balance_Tree(T, s);
     }
     free(p);
     return OK;
