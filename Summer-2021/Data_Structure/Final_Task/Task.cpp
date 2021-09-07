@@ -8,7 +8,7 @@
 #define Right 1
 #define None 0
 #define MAX_SKIP_NUM 100
-#define MAX_WORD_LENGTH 50
+#define MAX_WORD_LENGTH 100
 #define OK 0
 #define ERROR -1
 
@@ -227,7 +227,9 @@ int Insert(Tree &T, int ID, char *Name, int Tag, int Loc, int Loc1, char *Status
         while (p)
         {
             pp = p;
-            if (ID <= p->Data.ID)
+            if (ID == p->Data.ID)
+                return ERROR;
+            else if (ID < p->Data.ID)
             {
                 p = p->Child[Left];
                 Pos = Left;
@@ -385,11 +387,11 @@ int Find(TNode *Root, int Loc0, int &Num)
     {
         if (((Root->Data.Loc == Loc0) || (Root->Data.Loc1 == Loc0)) && (Root->Data.Tag == 1))
         {
-            printf("ID=%d\n",Root->Data.ID);
+            printf("ID=%d\n", Root->Data.ID);
             Num++;
         }
-        Find(Root->Child[Left],Loc0,Num);
-        Find(Root->Child[Right],Loc0,Num);
+        Find(Root->Child[Left], Loc0, Num);
+        Find(Root->Child[Right], Loc0, Num);
     }
     return Num;
 }
@@ -410,9 +412,9 @@ int Print(Tree &T, int ID)
         return ERROR;
     }
     if (p->Data.Tag == 0)
-        printf("ID:%d \nDevice:%s \nLocation:AT %d \nStatus:Status %s", p->Data.ID, p->Data.Name, p->Data.Loc, p->Data.Status);
+        printf("ID:%d \nDevice:%s \nLocation:AT %d \nStatus:Status %s\n", p->Data.ID, p->Data.Name, p->Data.Loc, p->Data.Status);
     else if (p->Data.Tag == 1)
-        printf("ID:%d \nDevice:%s \nLocation:FROM %d TO %d\nStatus:Status %s", p->Data.ID, p->Data.Name, p->Data.Loc, p->Data.Loc1, p->Data.Status);
+        printf("ID:%d \nDevice:%s \nLocation:FROM %d TO %d\nStatus:Status %s\n", p->Data.ID, p->Data.Name, p->Data.Loc, p->Data.Loc1, p->Data.Status);
     else
     {
         printf("Print Error.\n");
@@ -421,7 +423,7 @@ int Print(Tree &T, int ID)
     return OK;
 }
 //wait to modify
-int Change(Tree &T, int ID, char *New_Status)
+int Change(Tree &T, int ID, int New_Loc, int New_Loc1, char *New_Status)
 {
     TNode *p = T.Root;
     while (p)
@@ -435,8 +437,154 @@ int Change(Tree &T, int ID, char *New_Status)
     }
     if (p == NULL)
         return ERROR;
+    p->Data.Loc = New_Loc;
+    p->Data.Loc1 = New_Loc1;
     p->Data.Status = (char *)realloc(p->Data.Status, sizeof(char) * (strlen(New_Status) + 1));
+    if (!p->Data.Status)
+        return ERROR;
     strcpy(p->Data.Status, New_Status);
+    return OK;
+}
+
+int Execute(Tree &T, char *File_Name)
+{
+    FILE *rp = fopen(File_Name, "r");
+    if (!rp)
+        return ERROR;
+    else
+    {
+        while (!feof(rp))
+        {
+            char Order[MAX_WORD_LENGTH];
+            memset(Order, 0, sizeof(Order));
+            fscanf(rp, "%s", Order);
+            if (Order[0] == 'i')
+            {
+                char Skip[MAX_SKIP_NUM];
+                memset(Skip, 0, sizeof(Skip));
+                int ID = 0, Tag = -1, Loc = 0, Loc1 = 0;
+                char Name[MAX_WORD_LENGTH];
+                memset(Name, 0, sizeof(Name));
+                char Status[MAX_WORD_LENGTH];
+                memset(Status, 0, sizeof(Status));
+                if (fscanf(rp, "%d %s", &ID, Name) == EOF)
+                    break;
+                char c = '\0';
+                while (!((c == 'F') || (c == 'A')))
+                    c = fgetc(rp);
+                if (c == 'F')
+                {
+                    Tag = 1;
+                    fscanf(rp, "%s %d %s %d", Skip, &Loc, Skip, &Loc1);
+                }
+                else
+                {
+                    Tag = 0;
+                    fscanf(rp, "%s %d", Skip, &Loc);
+                    Loc1 = None;
+                }
+                while (c != 'S')
+                    c = fgetc(rp);
+                fscanf(rp, "%s", Skip);
+                fgetc(rp);
+                fgets(Status, MAX_WORD_LENGTH, rp);
+                Status[strlen(Status) - 1] = '\0';
+                if (Insert(T, ID, Name, Tag, Loc, Loc1, Status) == ERROR)
+                {
+                    printf("Insert Error.\n");
+                    return ERROR;
+                }
+                else
+                    printf("Insert Complete.\n");
+                printf("-------------------------------\n");
+            }
+            else if (Order[0] == 'd')
+            {
+                int ID = 0;
+                fgetc(rp);
+                fscanf(rp, "ID=%d", &ID);
+                if (Delete(T, ID) == ERROR)
+                {
+                    printf("Delete Error.\n");
+                    return ERROR;
+                }
+                else
+                    printf("Delete Complete.\n");
+                printf("-------------------------------\n");
+            }
+            else if (Order[0] == 'c')
+            {
+                int ID = 0, New_Loc = 0, New_Loc1 = 0;
+                char New_Status[MAX_WORD_LENGTH], Info[MAX_WORD_LENGTH], Skip[MAX_WORD_LENGTH];
+                memset(New_Status, 0, sizeof(New_Status));
+                memset(Info, 0, sizeof(Info));
+                memset(Skip, 0, sizeof(Skip));
+                fgetc(rp);
+                fscanf(rp, "ID=%d", &ID);
+                fscanf(rp, "%s", Skip);
+                if (Skip[0] == 'F')
+                {
+                    fscanf(rp, "%d", &New_Loc);
+                    fscanf(rp, "%s", Skip);
+                    fscanf(rp, "%d", &New_Loc1);
+                    fscanf(rp, "%s", Skip);
+                    fgets(New_Status, MAX_WORD_LENGTH, rp);
+                    New_Status[strlen(New_Status) - 1] = '\0';
+                }
+                else if (Skip[0] == 'A')
+                {
+                    fscanf(rp, "%d", &New_Loc);
+                    fscanf(rp, "%s", Skip);
+                    fgets(New_Status, MAX_WORD_LENGTH, rp);
+                    New_Status[strlen(New_Status) - 1] = '\0';
+                }
+                else
+                {
+                    printf("Change Error.\n");
+                    return ERROR;
+                }
+                if (Change(T, ID, New_Loc, New_Loc1, New_Status) == ERROR)
+                {
+                    printf("Change Error.\n");
+                    return ERROR;
+                }
+                else
+                    printf("Change Complete.\n");
+                printf("-------------------------------\n");
+            }
+            else if (Order[0] == 'p')
+            {
+                int ID = 0;
+                fscanf(rp, "%d", &ID);
+                if (Print(T, ID) == ERROR)
+                {
+                    printf("Print Error.\n");
+                    return ERROR;
+                }
+                else
+                    printf("Print Complete.\n");
+                printf("-------------------------------\n");
+            }
+            else if (Order[0] == 'f')
+            {
+                int fromto = 0, Num = 0;
+                fscanf(rp, "%d", &fromto);
+                printf("Fromto=%d\n", fromto);
+                if (Find(T.Root, fromto, Num) == ERROR)
+                {
+                    printf("Find Error.\n");
+                    return ERROR;
+                }
+                else
+                {
+                    printf("ToTal Num=%d.\n", Num);
+                    printf("-------------------------------\n");
+                    printf("Find Complete.\n");
+                }
+                printf("-------------------------------\n");
+            }
+        }
+    }
     return OK;
 }
 
@@ -445,7 +593,7 @@ int In_Tree(FILE *rp, Tree &T)
     char Skip[MAX_SKIP_NUM];
     memset(Skip, 0, sizeof(Skip));
     fgets(Skip, MAX_SKIP_NUM, rp);
-    int ID = 0, Tag = 0, Loc = 0, Loc1 = 0;
+    int ID = 0, Tag = -1, Loc = 0, Loc1 = 0;
     char Name[MAX_WORD_LENGTH];
     memset(Name, 0, sizeof(Name));
     char Status[MAX_WORD_LENGTH];
@@ -471,7 +619,9 @@ int In_Tree(FILE *rp, Tree &T)
         while (c != 'S')
             c = fgetc(rp);
         fscanf(rp, "%s", Skip);
+        fgetc(rp);
         fgets(Status, MAX_WORD_LENGTH, rp);
+        Status[strlen(Status) - 1] = '\0';
         Insert(T, ID, Name, Tag, Loc, Loc1, Status);
     }
     return OK;
@@ -499,6 +649,67 @@ int main()
             printf("-------------------------------\n");
             if (Order[0] == 'i')
             {
+                int ID = 0, Tag = -1, Loc = 0, Loc1 = 0;
+                char Name[MAX_WORD_LENGTH], Status[MAX_WORD_LENGTH], Info[MAX_WORD_LENGTH], Num[MAX_WORD_LENGTH];
+                memset(Name, 0, sizeof(Name));
+                memset(Status, 0, sizeof(Status));
+                memset(Info, 0, sizeof(Info));
+                memset(Num, 0, sizeof(Num));
+                printf("Please enter the info.\n");
+                printf("ID=");
+                scanf("%d", &ID);
+                printf("Device=");
+                scanf("%s", Name);
+                getchar();
+                while (1)
+                {
+                    printf("Location=");
+                    gets(Info);
+                    if ((Info[0] == 'F') || (Info[0] == 'A'))
+                        break;
+                    else
+                        printf("Location Error.\n");
+                }
+                if (Info[0] == 'F')
+                {
+                    int i = 5;
+                    Tag = 1;
+                    for (int j = 0; Info[i] != ' '; i++, j++)
+                        Num[j] = Info[i];
+                    Loc = atoi(Num);
+                    memset(Num, 0, sizeof(Num));
+                    i += 4;
+                    for (int j = 0; Info[i] != '\0'; i++, j++)
+                        Num[j] = Info[i];
+                    Loc1 = atoi(Num);
+                }
+                else
+                {
+                    int i = 3;
+                    Tag = 0;
+                    Loc1 = None;
+                    for (int j = 0; Info[i] != '\0'; i++, j++)
+                        Num[j] = Info[i];
+                    Loc = atoi(Num);
+                }
+                memset(Info, 0, sizeof(Info));
+                while (1)
+                {
+                    printf("Status=");
+                    gets(Info);
+                    if (Info[0] == 'S')
+                        break;
+                    else
+                        printf("Status Error.\n");
+                }
+                for (int i = 7, j = 0; i < strlen(Info); i++, j++)
+                    Status[j] = Info[i];
+                printf("-------------------------------\n");
+                if (Insert(T, ID, Name, Tag, Loc, Loc1, Status) == ERROR)
+                    printf("Insert Error.\n");
+                else
+                    printf("Insert Complete.\n");
+                printf("-------------------------------\n");
             }
             else if (Order[0] == 'd')
             {
@@ -511,9 +722,66 @@ int main()
                 else
                     printf("Delete Complete.\n");
                 printf("-------------------------------\n");
+                getchar();
             }
             else if (Order[0] == 'c')
             {
+                int ID = 0, New_Loc = 0, New_Loc1 = 0;
+                char New_Status[MAX_WORD_LENGTH], Info[MAX_WORD_LENGTH], Num[MAX_WORD_LENGTH];
+                memset(New_Status, 0, sizeof(New_Status));
+                memset(Info, 0, sizeof(Info));
+                memset(Num, 0, sizeof(Num));
+                printf("Please enter ID\nID=");
+                scanf("%d", &ID);
+                getchar();
+                printf("Please enter the new location.\n");
+                while (1)
+                {
+                    printf("New Location=");
+                    gets(Info);
+                    if ((Info[0] == 'F') || (Info[0] == 'A'))
+                        break;
+                    else
+                        printf("Location Error.\n");
+                }
+                if (Info[0] == 'F')
+                {
+                    int i = 5;
+                    for (int j = 0; Info[i] != ' '; i++, j++)
+                        Num[j] = Info[i];
+                    New_Loc = atoi(Num);
+                    memset(Num, 0, sizeof(Num));
+                    i += 4;
+                    for (int j = 0; Info[i] != '\0'; i++, j++)
+                        Num[j] = Info[i];
+                    New_Loc1 = atoi(Num);
+                }
+                else
+                {
+                    int i = 3;
+                    New_Loc1 = None;
+                    for (int j = 0; Info[i] != '\0'; i++, j++)
+                        Num[j] = Info[i];
+                    New_Loc = atoi(Num);
+                }
+                memset(Info, 0, sizeof(Info));
+                while (1)
+                {
+                    printf("Status=");
+                    gets(Info);
+                    if (Info[0] == 'S')
+                        break;
+                    else
+                        printf("Status Error.\n");
+                }
+                for (int i = 7, j = 0; i < strlen(Info); i++, j++)
+                    New_Status[j] = Info[i];
+                printf("-------------------------------\n");
+                if (Change(T, ID, New_Loc, New_Loc1, New_Status) == ERROR)
+                    printf("Change Error.\n");
+                else
+                    printf("Change Complete\n");
+                printf("-------------------------------\n");
             }
             else if (Order[0] == 'p')
             {
@@ -523,6 +791,7 @@ int main()
                 printf("-------------------------------\n");
                 Print(T, ID);
                 printf("-------------------------------\n");
+                getchar();
             }
             else if (Order[0] == 'f')
             {
@@ -531,14 +800,30 @@ int main()
                 scanf("%d", &fromto);
                 printf("-------------------------------\n");
                 int ID = Find(T.Root, fromto, Num);
-                if (Num==0)
+                if (Num == 0)
                     printf("Find Error.\n");
                 else
-                    printf("ToTal Num=%d.\n",Num);
+                {
+                    printf("ToTal Num=%d.\n", Num);
+                    printf("-------------------------------\n");
+                    printf("Find Complete.\n");
+                }
                 printf("-------------------------------\n");
+                getchar();
             }
             else if (Order[0] == 'e')
             {
+                char File_Name[MAX_WORD_LENGTH];
+                memset(File_Name, 0, sizeof(File_Name));
+                printf("Please enter the name of file.\nFile Name=");
+                scanf("%s", File_Name);
+                printf("-------------------------------\n");
+                if (Execute(T, File_Name) == ERROR)
+                    printf("Excute Error.\n");
+                else
+                    printf("Excute Complete.\n");
+                printf("-------------------------------\n");
+                getchar();
             }
             else if (Order[0] == 'b')
                 break;
@@ -547,7 +832,6 @@ int main()
                 printf("Order Error.\n");
                 getchar();
             }
-            getchar();
         }
         fclose(rp);
     }
