@@ -24,6 +24,8 @@ int Init_Graph(Tree T, Graph &G)
     G.Island_Start = NULL;
     Get_Num(T.Root, G);
     G.Link_Start = (GLink *)malloc(sizeof(GLink) * G.Link_Num);
+    if (!G.Link_Start)
+        return ERROR;
     G.Vex_Num = 0;
     G.Link_Num = 0;
     return OK;
@@ -34,6 +36,8 @@ int Init_Island(Island &I)
     I.Num = 0;
     I.Start = NULL;
     I.Vex_Num = 0;
+    I.Matrix = NULL;
+    I.Non_Zero_Num = 0;
     return OK;
 }
 
@@ -262,6 +266,7 @@ int Gen_Island(Tree T, Graph &G)
             G.Island_Start = (Island *)realloc(G.Island_Start, sizeof(Island) * G.Island_Num);
             if (!G.Island_Start)
                 return ERROR;
+            Init_Island(G.Island_Start[G.Island_Num - 1]);
             Island_Copy(G.Island_Start + G.Island_Num - 1, &I);
             G.Island_Start[G.Island_Num - 1].Num = G.Island_Num;
         }
@@ -324,11 +329,6 @@ int Sort_Island(Graph &G)
     return OK;
 }
 
-int Gen_Matrix(Graph G)
-{
-    return OK;
-}
-
 int Get_Island(Graph G, int Num)
 {
     Island *I = G.Island_Start + Num - 1;
@@ -340,7 +340,7 @@ int Get_Island(Graph G, int Num)
     return OK;
 }
 
-int Get_Node(Tree T, Graph G, GVex *Vex, int Weight, int &Num)
+int Get_Node(Tree T, Graph G, GVex *Vex, int Weight, int &Island_Num, int &Num)
 {
     if (!Num)
         if (Vex)
@@ -353,6 +353,7 @@ int Get_Node(Tree T, Graph G, GVex *Vex, int Weight, int &Num)
                         for (int j = 0; j < G.Island_Start[i].Vex_Num; j++)
                             if (Vex == G.Island_Start[i].Start[j])
                             {
+                                Island_Num = i + 1;
                                 Num = j + 1;
                                 break;
                             }
@@ -379,7 +380,7 @@ int Get_Node(Tree T, Graph G, GVex *Vex, int Weight, int &Num)
                                             Next_Vex = G.Vex_Start + i;
                                             break;
                                         }
-                            Get_Node(T, G, Next_Vex, p->Link->Weight, Num);
+                            Get_Node(T, G, Next_Vex, p->Link->Weight, Island_Num, Num);
                             p = p->Next_Link;
                         }
                     }
@@ -393,8 +394,8 @@ int Get_Bus(Tree T, Graph G, int ID)
     IDtoVex(T.Root, ID, Vex);
     if (Vex)
     {
-        int Num = 0;
-        Get_Node(T, G, Vex, 0, Num);
+        int Num = 0, Island_Num = 0;
+        Get_Node(T, G, Vex, 0, Island_Num, Num);
         printf("%d\n", Num);
     }
     else
@@ -422,11 +423,11 @@ int Get_Bus(Tree T, Graph G, int ID)
                     }
         if (!(Vex && Vex1))
             return ERROR;
-        int Num = 0, Num1 = 0;
-        Get_Node(T, G, Vex, 0, Num);
+        int Num = 0, Num1 = 0, Island_Num = 0;
+        Get_Node(T, G, Vex, 0, Island_Num, Num);
         for (int i = 0; i < G.Vex_Num; i++)
             G.Vex_Start[i].Visit = 0;
-        Get_Node(T, G, Vex1, 0, Num1);
+        Get_Node(T, G, Vex1, 0, Island_Num, Num1);
         printf("%d %d\n", Num, Num1);
     }
     for (int i = 0; i < G.Vex_Num; i++)
@@ -490,14 +491,14 @@ int Get_Equip(Tree T, Graph G, int Island_Num, int Num)
     return OK;
 }
 
-int Get_Line(Tree T, Graph G, int i, int j)
+GLink *Get_Line(Tree T, Graph G, int Island_Num, int i, int j)
 {
     for (int m = 0; m < G.Link_Num; m++)
     {
         if (G.Link_Start[m].Weight == 1)
         {
             GVex *Vex = NULL, *Vex1 = NULL;
-            int Num = 0, Num1 = 0;
+            int Num = 0, Num1 = 0, I_Num = 0, I_Num1 = 0;
             IDtoVex(T.Root, LoctoID(T.Root, G.Link_Start[m].Loc, None), Vex);
             if (!Vex)
                 for (int n = 0; n < G.Vex_Num; n++)
@@ -507,8 +508,10 @@ int Get_Line(Tree T, Graph G, int i, int j)
                         break;
                     }
             if (!Vex)
-                return ERROR;
-            Get_Node(T, G, Vex, 0, Num);
+                return NULL;
+            Get_Node(T, G, Vex, 0, I_Num, Num);
+            for (int k = 0; k < G.Vex_Num; k++)
+                G.Vex_Start[k].Visit = 0;
             IDtoVex(T.Root, LoctoID(T.Root, G.Link_Start[m].Loc1, None), Vex1);
             if (!Vex1)
                 for (int n = 0; n < G.Vex_Num; n++)
@@ -518,19 +521,170 @@ int Get_Line(Tree T, Graph G, int i, int j)
                         break;
                     }
             if (!Vex1)
-                return ERROR;
-            Get_Node(T, G, Vex1, 0, Num1);
-            if (((i == Num) && (j == Num1)) || ((i == Num1) && (j == Num)))
-            {
-                printf("%d\n", G.Link_Start[m].ID);
-                return G.Link_Start[m].ID;
-            }
+                return NULL;
+            Get_Node(T, G, Vex1, 0, I_Num1, Num1);
+            for (int k = 0; k < G.Vex_Num; k++)
+                G.Vex_Start[k].Visit = 0;
+            if ((I_Num == Island_Num) && (I_Num1 == Island_Num))
+                if (((i == Num) && (j == Num1)) || ((i == Num1) && (j == Num)))
+                {
+                    printf("%d\n", G.Link_Start[m].ID);
+                    return G.Link_Start + m;
+                }
         }
     }
-    return ERROR;
+    return NULL;
 }
 
-int Get_Y(int i, int j)
+int Gen_Matrix(Tree T, Graph G, int Island_Num)
 {
+    for (int i = 1; i <= G.Island_Start[Island_Num - 1].Vex_Num; i++)
+        for (int j = i + 1; j <= G.Island_Start[Island_Num - 1].Vex_Num; j++)
+        {
+            float X = 0;
+            char Info[MAX_WORD_LENGTH];
+            memset(Info, 0, sizeof(Info));
+            int ID = Get_Line(T, G, Island_Num, i, j)->ID;
+            TNode *p = T.Root;
+            while (p)
+            {
+                if (ID == p->Data.ID)
+                {
+                    for (int m = 0, n = 4; n < strlen(p->Data.Status); m++, n++)
+                        Info[m] = p->Data.Status[n];
+                    break;
+                }
+                else if (ID < p->Data.ID)
+                    p = p->Child[Left];
+                else
+                    p = p->Child[Right];
+            }
+            int Point = 0;
+            for (Point = 0; i < strlen(Info); Point++)
+                if (Info[Point] == '.')
+                    break;
+            char Num1[MAX_WORD_LENGTH], Num2[MAX_WORD_LENGTH];
+            memset(Num1, 0, sizeof(Num1));
+            memset(Num2, 0, sizeof(Num2));
+            for (int k = 0, t = 0; k < strlen(Info); k++, t++)
+            {
+                if (k < Point)
+                    Num1[t] = Info[k];
+                else if (k == Point)
+                    t = -1;
+                else
+                    Num2[t] = Info[k];
+            }
+            int N1 = atoi(Num1), N2 = atoi(Num2);
+            X = N1 + N2 * (1 / pow(10.0, (double)strlen(Num2)));
+            if (!G.Island_Start[Island_Num - 1].Matrix)
+            {
+                G.Island_Start[Island_Num - 1].Non_Zero_Num = 3;
+                G.Island_Start[Island_Num - 1].Matrix = (float(*)[3])malloc(sizeof(float[3]) * 3);
+                if (!G.Island_Start[Island_Num - 1].Matrix)
+                    return ERROR;
+                G.Island_Start[Island_Num - 1].Matrix[0][0] = i;
+                G.Island_Start[Island_Num - 1].Matrix[1][0] = i;
+                G.Island_Start[Island_Num - 1].Matrix[2][0] = -(1 / X);
+                G.Island_Start[Island_Num - 1].Matrix[0][1] = i;
+                G.Island_Start[Island_Num - 1].Matrix[1][1] = j;
+                G.Island_Start[Island_Num - 1].Matrix[2][1] = 1 / X;
+                G.Island_Start[Island_Num - 1].Matrix[0][2] = j;
+                G.Island_Start[Island_Num - 1].Matrix[1][2] = j;
+                G.Island_Start[Island_Num - 1].Matrix[2][2] = -(1 / X);
+            }
+            else
+            {
+                int Tagii = 0, Tagij = 0, Tagjj = 0;
+                for (int k = 0; k < G.Island_Start[Island_Num - 1].Non_Zero_Num; k++)
+                {
+                    if ((G.Island_Start[Island_Num - 1].Matrix[0][k] == i) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == i))
+                    {
+                        G.Island_Start[Island_Num - 1].Matrix[2][k] += -(1 / X);
+                        if (!G.Island_Start[Island_Num - 1].Matrix[2][k])
+                        {
+                            G.Island_Start[Island_Num - 1].Matrix[0][k] = 0;
+                            G.Island_Start[Island_Num - 1].Matrix[1][k] = 0;
+                        }
+                        Tagii = 1;
+                    }
+                    else if ((G.Island_Start[Island_Num - 1].Matrix[0][k] == j) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == j))
+                    {
+                        G.Island_Start[Island_Num - 1].Matrix[2][k] += -(1 / X);
+                        if (!G.Island_Start[Island_Num - 1].Matrix[2][k])
+                        {
+                            G.Island_Start[Island_Num - 1].Matrix[0][k] = 0;
+                            G.Island_Start[Island_Num - 1].Matrix[1][k] = 0;
+                        }
+                        Tagjj = 1;
+                    }
+                    else if (((G.Island_Start[Island_Num - 1].Matrix[0][k] == i) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == j)) || ((G.Island_Start[Island_Num - 1].Matrix[0][k] == j) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == i)))
+                    {
+                        G.Island_Start[Island_Num - 1].Matrix[2][k] += 1 / X;
+                        if (!G.Island_Start[Island_Num - 1].Matrix[2][k])
+                        {
+                            G.Island_Start[Island_Num - 1].Matrix[0][k] = 0;
+                            G.Island_Start[Island_Num - 1].Matrix[1][k] = 0;
+                        }
+                        Tagij = 1;
+                    }
+                    if (Tagii && Tagij && Tagjj)
+                        break;
+                }
+                if (!Tagii)
+                {
+                    G.Island_Start[Island_Num - 1].Non_Zero_Num++;
+                    G.Island_Start[Island_Num - 1].Matrix = (float(*)[3])realloc(G.Island_Start[Island_Num - 1].Matrix, sizeof(float[3]) * G.Island_Start[Island_Num - 1].Non_Zero_Num);
+                    if (!G.Island_Start[Island_Num - 1].Matrix)
+                        return ERROR;
+                    G.Island_Start[Island_Num - 1].Matrix[0][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = i;
+                    G.Island_Start[Island_Num - 1].Matrix[1][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = i;
+                    G.Island_Start[Island_Num - 1].Matrix[2][G.Island_Start[Island_Num - 1].Non_Zero_Num] = -(1 / X);
+                }
+                if (!Tagij)
+                {
+                    G.Island_Start[Island_Num - 1].Non_Zero_Num++;
+                    G.Island_Start[Island_Num - 1].Matrix = (float(*)[3])realloc(G.Island_Start[Island_Num - 1].Matrix, sizeof(float[3]) * G.Island_Start[Island_Num - 1].Non_Zero_Num);
+                    if (!G.Island_Start[Island_Num - 1].Matrix)
+                        return ERROR;
+                    G.Island_Start[Island_Num - 1].Matrix[0][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = i;
+                    G.Island_Start[Island_Num - 1].Matrix[1][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = j;
+                    G.Island_Start[Island_Num - 1].Matrix[2][G.Island_Start[Island_Num - 1].Non_Zero_Num] = 1 / X;
+                }
+                if (!Tagjj)
+                {
+                    G.Island_Start[Island_Num - 1].Non_Zero_Num++;
+                    G.Island_Start[Island_Num - 1].Matrix = (float(*)[3])realloc(G.Island_Start[Island_Num - 1].Matrix, sizeof(float[3]) * G.Island_Start[Island_Num - 1].Non_Zero_Num);
+                    if (!G.Island_Start[Island_Num - 1].Matrix)
+                        return ERROR;
+                    G.Island_Start[Island_Num - 1].Matrix[0][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = j;
+                    G.Island_Start[Island_Num - 1].Matrix[1][G.Island_Start[Island_Num - 1].Non_Zero_Num - 1] = j;
+                    G.Island_Start[Island_Num - 1].Matrix[2][G.Island_Start[Island_Num - 1].Non_Zero_Num] = -(1 / X);
+                }
+            }
+        }
+    return OK;
+}
+
+float Get_Y(Graph G, int Island_Num, int i, int j)
+{
+    if ((i > G.Island_Start[Island_Num - 1].Vex_Num) || (j > G.Island_Start[Island_Num - 1].Vex_Num))
+        return ERROR;
+    for (int k = 0; k < G.Island_Start[Island_Num - 1].Non_Zero_Num; k++)
+    {
+        if (((G.Island_Start[Island_Num - 1].Matrix[0][k] == i) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == j)) || ((G.Island_Start[Island_Num - 1].Matrix[0][k] == j) && (G.Island_Start[Island_Num - 1].Matrix[1][k] == i)))
+            return G.Island_Start[Island_Num - 1].Matrix[2][k];
+    }
+    return 0;
+}
+
+int Get_Artic(Graph G,int Island_Num)
+{
+    Island Copy;
+    Init_Island(Copy);
+    for (int k=0;k<G.Island_Start[Island_Num-1].Vex_Num;k++)
+    {
+        Island_Copy(&Copy,&G.Island_Start[Island_Num-1]);
+    }
     return OK;
 }

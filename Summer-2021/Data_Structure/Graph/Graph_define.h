@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 typedef struct Graph_Link
 {
     int ID;
@@ -30,6 +31,8 @@ typedef struct Island
     int Num;
     int Vex_Num;
     GVex **Start;
+    float (*Matrix)[3];
+    int Non_Zero_Num;
 } Island;
 
 typedef struct Graph
