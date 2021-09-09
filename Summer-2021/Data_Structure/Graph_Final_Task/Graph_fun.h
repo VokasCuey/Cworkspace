@@ -125,6 +125,7 @@ int Create_Vex(Graph &G, int ID, int Loc0)
     G.Vex_Start[G.Vex_Num - 1].Loc = Loc0;
     G.Vex_Start[G.Vex_Num - 1].Visit = 0;
     G.Vex_Start[G.Vex_Num - 1].First_Link = NULL;
+    G.Vex_Start[G.Vex_Num - 1].Degree = 0;
     return G.Vex_Num;
 }
 
@@ -141,6 +142,7 @@ int Create_Link(Graph &G, int ID, int Loc, int Loc1, int Weight)
 
 int Bind(GVex *Vex, GLink *Link)
 {
+    Vex->Degree++;
     LNode *p = Vex->First_Link, *pp = NULL;
     while (p)
     {
@@ -514,7 +516,7 @@ GLink *Get_Line(Tree T, Graph G, int Island_Num, int i, int j)
                         break;
                     }
             if (!Vex)
-                return NULL;
+                continue;
             Get_Node(T, G, Vex, 0, I_Num, Num);
             for (int k = 0; k < G.Vex_Num; k++)
                 G.Vex_Start[k].Visit = 0;
@@ -527,7 +529,7 @@ GLink *Get_Line(Tree T, Graph G, int Island_Num, int i, int j)
                         break;
                     }
             if (!Vex1)
-                return NULL;
+                continue;
             Get_Node(T, G, Vex1, 0, I_Num1, Num1);
             for (int k = 0; k < G.Vex_Num; k++)
                 G.Vex_Start[k].Visit = 0;

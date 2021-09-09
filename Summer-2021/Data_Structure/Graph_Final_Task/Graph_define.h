@@ -24,6 +24,7 @@ typedef struct Graph_Vex
     int Loc;
     LNode *First_Link;
     int Visit;
+    int Degree;
 } GVex;
 
 typedef struct Island
