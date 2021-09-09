@@ -14,10 +14,8 @@ int main()
         In_Tree(rp, T);
         Graph G;
         Init_Graph(T, G);
-        Update_Model(T.Root, G);
-        GtoT(T.Root, G);
-        Gen_Island(T, G);
         char Order[MAX_WORD_LENGTH];
+        int Update = 0;
         while (1)
         {
             memset(Order, 0, sizeof(Order));
@@ -202,11 +200,101 @@ int main()
                 printf("-------------------------------\n");
                 getchar();
             }
+            else if (Order[0] == 'u')
+            {
+                Update_Model(T.Root, G);
+                GtoT(T.Root, G);
+                Gen_Island(T, G);
+                Sort_Island(G);
+                int Node_Num = 0;
+                for (int i = 0; i < G.Island_Num; i++)
+                {
+                    Gen_Matrix(T, G, i + 1);
+                    Node_Num += G.Island_Start[i].Vex_Num;
+                    printf("Island %d Node Num=%d\n", i + 1, G.Island_Start[i].Vex_Num);
+                }
+                printf("Node Num=%d\n", Node_Num);
+                printf("Island Num=%d\n", G.Island_Num);
+                printf("-------------------------------\n");
+                printf("Update Model Complete.\n");
+                printf("-------------------------------\n");
+                Update = 1;
+            }
+            else if (Order[0] == 'g')
+            {
+                if (!Update)
+                    printf("Not Update Model Yet.\n");
+                else
+                {
+                    if (Order[4] == 'i')
+                    {
+                        if (Get_Island(G, atoi(&Order[11])) == ERROR)
+                            printf("Get Island Error.\n");
+                        else
+                        {
+                            printf("-------------------------------\n");
+                            printf("Get Island %d Complete.\n", atoi(&Order[11]));
+                        }
+                    }
+                    else if (Order[4] == 'b')
+                    {
+                        char ID[MAX_WORD_LENGTH];
+                        memset(ID, 0, sizeof(ID));
+                        for (int i = 11, j = 0; i < strlen(Order); i++, j++)
+                            ID[j] = Order[i];
+                        if (Get_Bus(T, G, atoi(ID)) == ERROR)
+                            printf("Get Bus Error.\n");
+                        else
+                        {
+                            printf("-------------------------------\n");
+                            printf("Get Bus ID=%d Complete.\n", atoi(ID));
+                        }
+                    }
+                    else if (Order[4] == 'e')
+                    {
+                        if (Get_Equip(T, G, atoi(&Order[10]), atoi(&Order[12])) == ERROR)
+                            printf("Get Equip Error.\n");
+                        else
+                        {
+                            printf("-------------------------------\n");
+                            printf("Get Island %d, Equip %d Complete.\n", atoi(&Order[10]), atoi(&Order[12]));
+                        }
+                    }
+                    else if (Order[4] == 'l')
+                    {
+                        GLink *Link = Get_Line(T, G, atoi(&Order[9]), atoi(&Order[11]), atoi(&Order[13]));
+                        if (!Link)
+                            printf("Get Line Error.\n");
+                        else
+                        {
+                            printf("ID=%d\n", Link->ID);
+                            printf("-------------------------------\n");
+                            printf("Get Line Island %d, From %d To %d Complete.\n", atoi(&Order[9]), atoi(&Order[11]), atoi(&Order[13]));
+                        }
+                    }
+                    else if (Order[4] == 'Y')
+                    {
+                        float Value = Get_Y(G, atoi(&Order[6]), atoi(&Order[8]), atoi(&Order[10]));
+                        if ((int)Value == ERROR)
+                            printf("Get Y Error.\n");
+                        else
+                        {
+                            printf("Y[%d][%d]=%.3f\n", atoi(&Order[8]), atoi(&Order[10]), Value);
+                            printf("-------------------------------\n");
+                            printf("Get Y, Island %d, i=%d, j=%d Complete.\n", atoi(&Order[6]), atoi(&Order[8]), atoi(&Order[10]));
+                        }
+                    }
+                    else
+                        printf("Order Error.\n");
+                }
+                printf("-------------------------------\n");
+            }
             else if (Order[0] == 'b')
                 break;
             else
             {
                 printf("Order Error.\n");
+                printf("-------------------------------\n");
                 getchar();
             }
         }

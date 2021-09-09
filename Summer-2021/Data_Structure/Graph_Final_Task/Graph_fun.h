@@ -331,6 +331,8 @@ int Sort_Island(Graph &G)
 
 int Get_Island(Graph G, int Num)
 {
+    if ((Num < 1) || (Num > G.Island_Num))
+        return ERROR;
     Island *I = G.Island_Start + Num - 1;
     if (!I)
         return ERROR;
@@ -443,12 +445,12 @@ int Get_Node_Link(Tree T, Graph G, GVex *Vex, int Weight)
             {
                 Vex->Visit = 1;
                 if (Vex->ID)
-                    printf("%d\n", Vex->ID);
+                    printf("ID=%d\n", Vex->ID);
                 LNode *p = Vex->First_Link;
                 while (p)
                 {
                     if (!p->Link->Visit)
-                        printf("%d\n", p->Link->ID);
+                        printf("ID=%d\n", p->Link->ID);
                     p->Link->Visit = 1;
                     int Loc = 0;
                     GVex *Next_Vex = NULL;
@@ -474,6 +476,8 @@ int Get_Node_Link(Tree T, Graph G, GVex *Vex, int Weight)
 
 int Get_Equip(Tree T, Graph G, int Island_Num, int Num)
 {
+    if ((Num < 1) || (Island_Num < 1) || (Island_Num > G.Island_Num) || Num > G.Island_Start[Island_Num - 1].Vex_Num)
+        return ERROR;
     GVex *Vex = NULL;
     for (int i = 0; i < G.Island_Start[Island_Num - 1].Vex_Num; i++)
         if (Num == i + 1)
@@ -493,6 +497,8 @@ int Get_Equip(Tree T, Graph G, int Island_Num, int Num)
 
 GLink *Get_Line(Tree T, Graph G, int Island_Num, int i, int j)
 {
+    if ((i < 1) || (j < 1) || (Island_Num < 1) || (Island_Num > G.Island_Num) || (i > G.Island_Start[Island_Num - 1].Vex_Num) || (j > G.Island_Start[Island_Num - 1].Vex_Num))
+        return NULL;
     for (int m = 0; m < G.Link_Num; m++)
     {
         if (G.Link_Start[m].Weight == 1)
@@ -527,10 +533,7 @@ GLink *Get_Line(Tree T, Graph G, int Island_Num, int i, int j)
                 G.Vex_Start[k].Visit = 0;
             if ((I_Num == Island_Num) && (I_Num1 == Island_Num))
                 if (((i == Num) && (j == Num1)) || ((i == Num1) && (j == Num)))
-                {
-                    printf("%d\n", G.Link_Start[m].ID);
                     return G.Link_Start + m;
-                }
         }
     }
     return NULL;
@@ -668,7 +671,7 @@ int Gen_Matrix(Tree T, Graph G, int Island_Num)
 
 float Get_Y(Graph G, int Island_Num, int i, int j)
 {
-    if ((i > G.Island_Start[Island_Num - 1].Vex_Num) || (j > G.Island_Start[Island_Num - 1].Vex_Num))
+    if ((i > G.Island_Start[Island_Num - 1].Vex_Num) || (j > G.Island_Start[Island_Num - 1].Vex_Num) || (i < 1) || (j < 1) || (Island_Num < 1) || (Island_Num > G.Island_Num))
         return ERROR;
     for (int k = 0; k < G.Island_Start[Island_Num - 1].Non_Zero_Num; k++)
     {
@@ -678,13 +681,13 @@ float Get_Y(Graph G, int Island_Num, int i, int j)
     return 0;
 }
 
-int Get_Artic(Graph G,int Island_Num)
+int Get_Artic(Graph G, int Island_Num)
 {
     Island Copy;
     Init_Island(Copy);
-    for (int k=0;k<G.Island_Start[Island_Num-1].Vex_Num;k++)
+    for (int k = 0; k < G.Island_Start[Island_Num - 1].Vex_Num; k++)
     {
-        Island_Copy(&Copy,&G.Island_Start[Island_Num-1]);
+        Island_Copy(&Copy, &G.Island_Start[Island_Num - 1]);
     }
     return OK;
 }
