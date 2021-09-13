@@ -349,12 +349,12 @@ int Delete(Tree &T, int ID)
     free(p);
     return OK;
 }
-//wait to modify
+
 int Find(TNode *Root, int Loc0, int &Num)
 {
     if (Root)
     {
-        if (((Root->Data.Loc == Loc0) || (Root->Data.Loc1 == Loc0)) && (Root->Data.Tag == 1))
+        if ((Root->Data.Loc == Loc0) || (Root->Data.Loc1 == Loc0))
         {
             printf("ID=%d\n", Root->Data.ID);
             Num++;
@@ -393,7 +393,7 @@ int Print(Tree &T, int ID)
     printf("Print Complete.\n");
     return OK;
 }
-//wait to modify
+
 int Change(Tree &T, int ID, int New_Loc, int New_Loc1, char *New_Status)
 {
     TNode *p = T.Root;
@@ -526,7 +526,8 @@ int Execute(Tree &T, char *File_Name)
             else if (Order[0] == 'p')
             {
                 int ID = 0;
-                fscanf(rp, "%d", &ID);
+                fgetc(rp);
+                fscanf(rp, "ID=%d", &ID);
                 if (Print(T, ID) == ERROR)
                     return ERROR;
                 printf("-------------------------------\n");
@@ -534,7 +535,8 @@ int Execute(Tree &T, char *File_Name)
             else if (Order[0] == 'f')
             {
                 int fromto = 0, Num = 0;
-                fscanf(rp, "%d", &fromto);
+                fgetc(rp);
+                fscanf(rp, "fromto=%d", &fromto);
                 printf("Fromto=%d\n", fromto);
                 if (Find(T.Root, fromto, Num) == ERROR)
                 {

@@ -1,13 +1,26 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string.h>
+#include <fstream>
 using namespace std;
 
 int main()
 {
-    char test[1000];
-    memset(test,0,sizeof(test));
-    cout << strlen(test) << endl;
+    int i=0;
+    ofstream fout;
+    fout.open("test.txt");
+    if (!fout)
+    return -1;
+    fout << 1 << endl;
+    fout.close();
+    ifstream fin;
+    fin.open("test,txt");
+    if (!fin)
+        return -1;
+    fin >> i;
+    cout << i << endl;
+    fin.close();
+    typedef void (*p)();
+    typedef int (*q)(int, char);
     system("pause");
     return 0;
 }

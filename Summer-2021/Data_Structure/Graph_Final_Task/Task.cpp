@@ -142,7 +142,7 @@ int main()
                 memset(Info, 0, sizeof(Info));
                 while (1)
                 {
-                    printf("Status=");
+                    printf("New Status=");
                     gets(Info);
                     if (Info[0] == 'S')
                         break;
