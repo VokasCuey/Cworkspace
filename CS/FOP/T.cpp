@@ -3,11 +3,13 @@ using namespace std;
 
 int main()
 {
-    int a = 0, b = 0;
-    cin >> a >> b;
-    if (((a % 100) / 10) == b)
-        cout << "YES" << endl;
+    int in=0;
+    cin >> in;
+    if (in>0)
+    cout << 1;
+    if (in==0)
+    cout << 0;
     else
-        cout << "NO" << endl;
+    cout << -1;
     return 0;
 }
