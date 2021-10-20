@@ -4,13 +4,13 @@ const int M = 5000000;
 
 int* prepare() {
     // 请定义一个数组b，根据代码推理所需要包含的元素个数。
-    int *b=new int[10];
+    int *b=(int*)malloc(sizeof(int)*10);
     b[9] = 9;
     return b;
 }
 bool test() {
     // 请定义一个数组a，根据代码推理所需要包含的元素个数。
-    int *a=new int[M];
+    int *a=(int*)malloc(sizeof(int)*M);
     for (int i = 0; i < M; ++ i)
         a[i] = i;
     int c = 10;
