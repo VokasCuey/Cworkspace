@@ -35,8 +35,7 @@ int main()
         cout << "  Init:";
         Output_array(array, i + 1);
         if (i != 0)
-            for (int j = i + 1; Moveback(array, i + 1, j); j--)
-                ;
+            for (int j = i + 1; Moveback(array, i + 1, j); j--);
         cout << "  Final:";
         Output_array(array, i + 1);
     }
