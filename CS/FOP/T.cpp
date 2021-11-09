@@ -1,26 +1,21 @@
 #include <iostream>
+#include <cstring>
+#include <cmath>
+#include <stdlib.h>
+#include <fstream>
+#include <ctime>
 using namespace std;
-
-struct Node
-{
-    int x, y;
-} a, b;
-
-Node mean(Node a, Node b)
-{
-    Node c={0,0};
-    c.x=0.5*(a.x+b.x);
-    c.y=0.5*(a.y+b.y);
-    return c;
-}
 
 int main()
 {
+    char str[]="TSINGHUA";
+    ofstream out("out.txt");
+    out << str;
+    out.close();
 
-    cin >> a.x >> a.y;
-    cin >> b.x >> b.y;
-
-    Node c = mean(a, b);
-    cout << c.x << " " << c.y << endl;
+    out.open("out.bin",ios::binary);
+    out.write(str,strlen(str));
+    out.close();
+    //system("pause");
     return 0;
 }

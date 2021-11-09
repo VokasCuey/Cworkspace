@@ -1,0 +1,1 @@
+cin.unsetf(ios::skipws);
