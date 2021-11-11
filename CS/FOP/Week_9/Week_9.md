@@ -16,13 +16,17 @@ Output:
 
     如果回文串，输出1，否则输出0。
 
-Example Input:
+Input Example:
 
     A man, a plan, a canal: Panama
 
-Example Output:
+Output Example:
 
     1
+
+Note:
+
+    无
 
 ---
 
@@ -66,12 +70,12 @@ Output:
 
     注意：逗号后面有一个空格，冒号后面没有。
 
-Example Input:
+Input Example:
 
     5
     4 3 1 1 2
 
-Example Output:
+Output Example:
 
     swap(a[0], a[2]):1 3 4 1 2
     swap(a[1], a[3]):1 1 4 3 2
@@ -79,10 +83,69 @@ Example Output:
     swap(a[3], a[3]):1 1 2 3 4
     swap(a[4], a[4]):1 1 2 3 4
 
-Annotation:
+Note:
 
     【数据规模】
 
     n<=100，整数元素在 int 范围内
 
 ---
+
+### P2332. 成绩排序
+
+---
+
+Description:
+
+    N 名考生考语文，数学，英语，物理四科。输出按总成绩排序后的结果，总分相同的，按规定的语文，数学，英语，物理顺序来排序，测试数据保证次序是唯一的。
+
+Input:
+
+    从 input.txt 读入。
+
+    输入文件第一行为学生人数 N，
+
+    接下来 N 行每行包括考生姓名 name，语文分数，数学分数，英语分数，物理分数。 name 长度不超过 10，保证学生姓名互不相同。 0 <= 分数 <= 100。
+
+    学生数量小于 1000 人。
+
+Output:
+
+    输出到 output.txt 中。
+
+    输出包括 N 行分别为 N 名考生的名字。
+
+Input Example:
+
+    12
+    Y1h 99.5 99.5 99.5 99.5
+    uD6z 99.5 99.5 99.5 100.0
+    NZjd 99.5 99.5 100.0 99.5
+    14kA 99.5 99.5 100.0 100.0
+    yfKn 99.5 100.0 99.5 100.0
+    3sP6 99.5 100.0 100.0 100.0
+    w0lD 100.0 99.5 99.5 99.5
+    Y1R 100.0 99.5 99.5 100.0
+    PQe 100.0 99.5 100.0 100.0
+    39yo 100.0 100.0 99.5 99.5
+    ey5p 100.0 100.0 99.5 100.0
+    dN8P 100.0 100.0 100.0 99.5
+
+Output Example:
+
+    dN8P
+    ey5p
+    PQe
+    3sP6
+    39yo
+    Y1R
+    yfKn
+    14kA
+    w0lD
+    NZjd
+    uD6z
+    Y1h
+
+Note:
+
+    无

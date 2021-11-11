@@ -31,13 +31,16 @@ char trans(char ltr)
 
 int str_judge(char str[MAX_LENGTH])
 {
-    if (!strlen(str))
-        return 0;
-    for (int i = 0, j = strlen(str) - 1; i < strlen(str) / 2;)
+    int num = 0;
+    for (int i = 0; i < strlen(str); i++)
+        if (trans(str[i]))
+            num++;
+    for (int i = 0, j = strlen(str) - 1, k = 0; k < num / 2;)
     {
         char head = trans(str[i]), tail = trans(str[j]);
         if (head && tail)
         {
+            k++;
             if (head != tail)
                 return 0;
             i++;
