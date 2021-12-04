@@ -1,0 +1,7 @@
+Input: 8
+3 9 5 1 -2 -2 9 -9
+Output: 8
+-6 6 4 -4 0 0 18 -18
+Space: 3
+CmdEnable: 8
+inbox outbox copyfrom copyto add sub jump jumpifzero

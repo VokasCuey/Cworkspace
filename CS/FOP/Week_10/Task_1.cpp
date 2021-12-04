@@ -34,7 +34,6 @@ void create(Llist &L, int n)
 {
     L.len = n;
     L.head = new Lnode;
-    // L.head = (Lnode *)malloc(sizeof(Lnode));
     // 创建链表头结点
     L.head->num = 1;
     L.head->next = NULL;
@@ -44,7 +43,6 @@ void create(Llist &L, int n)
     {
         // 对p的下一个节点进行内存分配、初始化和赋值
         p->next = new Lnode;
-        // p->next = (Lnode *)malloc(sizeof(Lnode));
         p->next->num = i + 1;
         p->next->next = NULL;
         // p的下一个节点的prev指向p

@@ -1,0 +1,7 @@
+Input: 2
+1 2
+Output: 2
+1 2
+Space: 0
+CmdEnable: 2
+inbox outbox

@@ -1,14 +1,9 @@
 #include <iostream>
-#include <cstring>
+#include <string.h>
 #include <cmath>
-#include <stdlib.h>
-#include <fstream>
-#include <ctime>
-using namespace std;
 
 int main()
 {
-    short a;
-    //system("pause");
+    std::cout << pow(8,8);
     return 0;
 }
