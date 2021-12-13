@@ -1,0 +1,24 @@
+23
+inbox
+copyto 0
+copyfrom 0
+sub 0
+copyto 3
+copyto 4
+inbox
+copyto 1
+inbox
+copyto 2
+copyfrom 3
+add 0
+copyto 3
+copyfrom 1
+add 4
+copyto 4
+copyfrom 3
+sub 2
+jumpifzero 21
+jump 11
+copyfrom 4
+outbox
+jump 3

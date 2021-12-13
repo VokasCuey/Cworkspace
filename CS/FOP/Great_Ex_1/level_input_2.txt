@@ -1,4 +1,4 @@
-2 11
+11
 inbox
 copyto 0
 inbox

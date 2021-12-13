@@ -31,8 +31,15 @@ int p_userOutput = 0;
 int instruction;
 int op; ///////////////////////////////
 
-bool gameFinish;
+bool stepTag = false;
+bool gameFinish = false;
 bool have_error;
+void line(int n)
+{
+	for (int i = 0; i < n; i++)
+		cout << '-';
+	cout << endl;
+}
 void release()
 {
 	delete[] input;
@@ -45,8 +52,21 @@ void release()
 }
 void reset()
 {
+	ifstream level("level.txt");
+	int levelNum = 0;
+	while (!level.eof())
+	{
+		char tmp[1000] = {0};
+		level.getline(tmp, 1000);
+		levelNum++;
+	}
+	levelNum--;
+	level.close();
+	ofstream reLevel("level.txt");
+	for (int i = 0; i < levelNum; i++)
+		reLevel << "Level " << i + 1 << " unfinished" << endl;
 }
-void getCmd(bool gameTag)
+void getCmd(bool &gameTag)
 {
 	string cmd;
 	while (1)
@@ -57,16 +77,31 @@ void getCmd(bool gameTag)
 			break;
 		else if (cmd == "reset")
 		{
+			reset();
 			cout << "reset complete." << endl;
 		}
 		else
 			cout << "Command error." << endl;
 	}
+	if (cmd == "quit")
+		gameTag = false;
+	if (cmd == "continue")
+		while (1)
+		{
+			string tmp;
+			cout << "Please enter your simulation mode(step/continue)" << endl;
+			cin >> tmp;
+			if (tmp == "step" || tmp == "continue")
+			{
+				(tmp == "step") ? stepTag = true : stepTag = false;
+				break;
+			}
+		}
 }
 void getLevelInfo()
 {
 	ifstream lv("level.txt");
-	cout << "-----------------------------" << endl;
+	line(20);
 	if (!lv)
 	{
 		ofstream newLv("level.txt");
@@ -110,13 +145,16 @@ void getUserInput()
 	{
 		while (1)
 		{
+			cout << "Please enter level." << endl;
 			cin >> level;
 			if (level > maxLevel)
 				cout << "Selected level error, please reselect level." << endl;
 			else
 				break;
 		}
+		cout << "Please enter command num." << endl;
 		cin >> N;
+		cout << "Please enter your command." << endl;
 		userInput = new string[N + 1];
 		nums = new int[N + 1];
 		for (int i = 1; i < N + 1; i++)
@@ -327,6 +365,9 @@ bool loadLevel()
 	// 	break;
 	// }
 }
+void print()
+{
+}
 void onestepOperate()
 {
 	if (userInput[instruction] == "inbox") //// more than 1
@@ -491,6 +532,9 @@ void simulation()
 		else
 		{
 			onestepOperate();
+			print();
+			if (stepTag)
+				getchar();
 			if (have_error)
 				return;
 			instruction++;
@@ -499,7 +543,7 @@ void simulation()
 
 	p_userOutput = 0;
 
-	while (p_output < s_output) //!output.empty()
+	while (p_output < s_output) //! output.empty()
 	{
 		if (p_userOutput >= s_userOutput) //情况不会相反,即userOutput.size()<=output.size()
 		{
@@ -535,14 +579,18 @@ void simulation()
 
 int main()
 {
+	bool gameTag = true;
 	while (1)
 	{
-		bool gameTag = true;
+		getCmd(gameTag);
+		if (!gameTag)
+			break;
 		getLevelInfo();
 		getUserInput();
 		if (loadLevel())
 			simulation();
 		release();
 	}
+	cout << "Game end" << endl;
 	return 0;
 }

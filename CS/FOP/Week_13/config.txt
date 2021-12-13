@@ -1,0 +1,4 @@
+SIZE = 10
+RAND = 15
+LOG = output.txt
+BOX = TRUE
