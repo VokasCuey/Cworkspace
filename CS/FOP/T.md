@@ -1,1 +1,1 @@
-$abcde=sin(b)$
+$abcde=\sin(b_2)$
