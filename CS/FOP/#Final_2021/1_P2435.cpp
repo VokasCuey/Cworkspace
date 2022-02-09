@@ -3,7 +3,7 @@ using namespace std;
 
 int dis_2(int x1, int y1, int x2, int y2)
 {
-    return ((x1 -x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    return ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 }
 
 int main()
@@ -12,7 +12,7 @@ int main()
     cin >> n;
     int **dot = new int *[n + 1]();
     for (int i = 1; i <= n; i++)
-        dot[i]= new int[2]();
+        dot[i] = new int[2]();
     for (int i = 1; i <= n; i++)
         cin >> dot[i][0] >> dot[i][1];
     cin >> m;
